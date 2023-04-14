@@ -102,6 +102,10 @@ public class UserDao implements Dao<Long, User> {
         }
     }
 
+    public Optional<User> findByLogin(String login) {
+        return Optional.empty();
+    }
+
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();

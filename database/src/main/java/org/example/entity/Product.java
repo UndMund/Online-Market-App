@@ -34,7 +34,7 @@ public class Product {
                ", description='" + description + '\'' +
                ", status=" + status +
                ", category=" + category +
-               ", user=" + user +
+               ", seller=" + user.toString() +
                '}';
     }
 

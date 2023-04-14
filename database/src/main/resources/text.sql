@@ -35,11 +35,11 @@ VALUES ('Nazar', 'ADMIN', 'zavadskiy.nazar@mail.ru', '+375336328517', '12345678'
        ('Petya', 'USER', 'petyaEt@mail.ru', '+375293452334', '56788765');
 
 INSERT INTO product(product_name, price, description, status, category, user_id)
-VALUES ('Xiaomi Mi 11 Lite', 300, 'Работает прекрасно, использовался 2 года', 'ON_SALE','Телефоны и аксессуары', 1),
-       ('MacBook Pro 15 2018', 1500, 'Все рабочее, внешние следы износа', 'SALES','Ноутбуки и аксессуары' , 1),
-       ('Honda CRF 650L', 3500, 'Требуеется капитальный ремонт двигателя', 'ON_SALE','Мототехника' ,2),
-       ('Гитара Crafter DE/7N', 500, 'Новый инсрумент', 'SALES','Музыкальные инструменты' , 3),
-       ('Чехол для телефона Xiaomi Mi 8', 2, 'Цвета: графит, крассный, белый, черный', 'ON_SALE', 'Телефоны и аксессуары', 4);
+VALUES ('Xiaomi Mi 11 Lite', 300, 'Работает прекрасно, использовался 2 года', 'ON_SALE','PHONE', 1),
+       ('MacBook Pro 15 2018', 1500, 'Все рабочее, внешние следы износа', 'SALES','LAPTOP' , 1),
+       ('Honda CRF 650L', 3500, 'Требуеется капитальный ремонт двигателя', 'ON_SALE','BIKE' ,2),
+       ('Гитара Crafter DE/7N', 500, 'Новый инсрумент', 'SALES','MUSICAL_INSTRUMENTS' , 3),
+       ('Чехол для телефона Xiaomi Mi 8', 2, 'Черный цвет', 'ON_SALE', 'PHONE', 4);
 
 INSERT INTO orders(product_id, customer_id)
 VALUES (2, 4),

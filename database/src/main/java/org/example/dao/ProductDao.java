@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductDao implements Dao<Long, Product> {
-
     private static final ProductDao INSTANCE = new ProductDao();
 
     private static final UserDao userDao = UserDao.getINSTANCE();
@@ -47,13 +46,12 @@ public class ProductDao implements Dao<Long, Product> {
             """;
     private static String UPDATE_BY_ID_SQL = """
             UPDATE product
-            SET id = ?,
-            product_name = ?,
-            price = ?,
-            description = ?,
-            status = ?,
-            category = ?,
-            user_id = ?
+            SET product_name = ?,
+                price = ?,
+                description = ?,
+                status = ?,
+                category = ?,
+                user_id = ?
             WHERE id = ?
             """;
     private static String SAVE_SQL = """
@@ -69,14 +67,13 @@ public class ProductDao implements Dao<Long, Product> {
     public boolean updateById(Product product) {
         try (var connection = ConnectionManager.get();
              var statement = connection.prepareStatement(UPDATE_BY_ID_SQL)) {
-            statement.setLong(1, product.getId());
-            statement.setString(2, product.getName());
-            statement.setBigDecimal(3, product.getPrice());
-            statement.setString(4, product.getDescription());
-            statement.setString(5, product.getStatus().name());
-            statement.setString(6, product.getCategory().name());
-            statement.setLong(7, product.getUser().getId());
-            statement.setLong(8, product.getId());
+            statement.setString(1, product.getName());
+            statement.setBigDecimal(2, product.getPrice());
+            statement.setString(3, product.getDescription());
+            statement.setString(4, product.getStatus().name());
+            statement.setString(5, product.getCategory().name());
+            statement.setLong(6, product.getUser().getId());
+            statement.setLong(7, product.getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -113,14 +110,15 @@ public class ProductDao implements Dao<Long, Product> {
              var statement = connection.prepareStatement(FIND_ALL_SQL)) {
             List<Product> products = new ArrayList<>();
             var result = statement.executeQuery();
-             while (result.next()) {
-                 products.add(buildProduct(result));
-             }
-             return products;
+            while (result.next()) {
+                products.add(buildProduct(result));
+            }
+            return products;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
+
 
     public List<Product> findAllByUserId(Long userId) {
         try (var connection = ConnectionManager.get();

@@ -18,9 +18,8 @@ public class Order {
     public String toString() {
         return "Order{" +
                "id=" + id +
-               ", product=" + product +
-               ", user=" + user +
-               '}';
+               ", product=" + product.toString() +
+               ", customer=" + user.toString();
     }
 
     public Long getId() {

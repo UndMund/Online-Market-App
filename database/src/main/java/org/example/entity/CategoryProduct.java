@@ -6,6 +6,14 @@ public enum CategoryProduct {
     BIKE("Мототехника"),
     MUSICAL_INSTRUMENTS("Музыкальные инструменты");
 
-    CategoryProduct(String s) {
+    private String description;
+
+    public String getDescription() {
+        return description;
     }
+
+    CategoryProduct(String description) {
+    }
+
+
 }
