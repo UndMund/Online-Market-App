@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.entity.PositionUser;
 import org.example.entity.User;
+import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
 import java.sql.Connection;
@@ -59,7 +60,7 @@ public class UserDao implements Dao<Long, User> {
         try (var connection = ConnectionManager.get()) {
             return updateById(user, connection);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -74,14 +75,21 @@ public class UserDao implements Dao<Long, User> {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+        try (var connection = ConnectionManager.get()) {
+            return findById(id, connection);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public Optional<User> findById(Long id, Connection connection) {
+        try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             User user = null;
             statement.setLong(1, id);
             var result = statement.executeQuery();
@@ -90,7 +98,7 @@ public class UserDao implements Dao<Long, User> {
             }
             return Optional.ofNullable(user);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -105,7 +113,7 @@ public class UserDao implements Dao<Long, User> {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -117,7 +125,7 @@ public class UserDao implements Dao<Long, User> {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -139,19 +147,19 @@ public class UserDao implements Dao<Long, User> {
                 user.setId(generatedKeys.getLong("id"));
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
-    private User buildUser(ResultSet resultSet) throws SQLException {
+    private User buildUser(ResultSet result) throws SQLException {
         return new User(
-                resultSet.getLong("id"),
-                resultSet.getString("username"),
-                PositionUser.valueOf(resultSet.getString("position")),
-                resultSet.getString("email"),
-                resultSet.getString("phone_number"),
-                resultSet.getString("password"),
-                resultSet.getBigDecimal("money_balance")
+                result.getLong("id"),
+                result.getString("username"),
+                PositionUser.valueOf(result.getString("position")),
+                result.getString("email"),
+                result.getString("phone_number"),
+                result.getString("password"),
+                result.getBigDecimal("money_balance")
         );
     }
 
