@@ -9,12 +9,6 @@ CREATE TABLE users
     money_balance NUMERIC DEFAULT 0
 );
 
-CREATE TABLE categories
-(
-    id SERIAL PRIMARY KEY ,
-    category_name VARCHAR(64) NOT NULL
-);
-
 CREATE TABLE product
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -23,7 +17,7 @@ CREATE TABLE product
     description  VARCHAR(800)              NOT NULL,
     status       VARCHAR(16)               NOT NULL,
     category     VARCHAR(32)               NOT NULL,
-    user_id      INT REFERENCES users (id) NOT NULL,
+    user_id      INT REFERENCES users (id) ON DELETE CASCADE NOT NULL ,
     UNIQUE (product_name, user_id)
 );
 
@@ -31,7 +25,7 @@ CREATE TABLE orders
 (
     id BIGSERIAL PRIMARY KEY ,
     product_id BIGINT REFERENCES product(id) NOT NULL ,
-    customer_id INT REFERENCES users(id) NOT NULL
+    customer_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL
 );
 
 INSERT INTO users(username, position, email, phone_number, password)

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class User {
-    private Integer id;
+    private Long id;
     private String userName;
     private PositionUser position;
     private String email;
@@ -15,7 +15,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String userName, PositionUser position, String email, String phoneNumber, String password, BigDecimal money) {
+    public User(Long id, String userName, PositionUser position, String email, String phoneNumber, String password, BigDecimal money) {
         this.id = id;
         this.userName = userName;
         this.position = position;
@@ -51,11 +51,11 @@ public class User {
                '}';
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
