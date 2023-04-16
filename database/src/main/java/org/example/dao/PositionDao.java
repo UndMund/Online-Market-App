@@ -8,12 +8,14 @@ import org.example.utils.ConnectionManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PositionDao {
     private static final PositionDao INSTANCE = new PositionDao();
+
     private PositionDao() {
     }
 
@@ -30,13 +32,39 @@ public class PositionDao {
             WHERE id = ?
             """;
 
-    private static String FIND_POSITION_BY_USER= """
-            SELECT p.id 
+    private static String FIND_POSITION_BY_USER = """
+            SELECT p.id, p.position_name
             FROM position p 
             JOIN user_position up 
             ON p.id = up.position_id
             WHERE up.user_id = ?
             """;
+    private static String SAVE_SQL = """
+            INSERT INTO position (position_name) 
+            VALUES (?)
+            """;
+
+    private static String DELETE_SQL = """
+            DELETE FROM position
+            WHERE id = ?
+            """;
+
+    public Position save(Position position) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, position.getPositionName());
+
+            statement.executeUpdate();
+
+            var generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next())
+                position.setId(generatedKeys.getInt("id"));
+            return position;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
 
     public List<Position> findAll() {
         List<Position> positions = new ArrayList<>();
@@ -51,6 +79,7 @@ public class PositionDao {
             throw new DaoException(e);
         }
     }
+
     public Optional<Position> findById(Long id) {
         try (var connection = ConnectionManager.get()) {
             return findById(id, connection);
@@ -68,6 +97,17 @@ public class PositionDao {
                 position = buildPosition(result);
             }
             return Optional.ofNullable(position);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean delete(Integer id) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(DELETE_SQL)) {
+            statement.setLong(1, id);
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
         }

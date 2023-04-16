@@ -54,7 +54,6 @@ public final class ConnectionManager {
         }
     }
 
-
     private ConnectionManager() {
     }
 }

@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/trading_floor</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="trading_floor_test@localhost" uuid="a8d8b673-40cc-49e8-90ea-bbc41f1918d6">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/trading_floor_test</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

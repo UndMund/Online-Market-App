@@ -1,6 +1,6 @@
 package org.example.entity;
 
-public enum StatusProduct {
+public enum Status {
     ON_SALE,
     SALES;
 }

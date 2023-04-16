@@ -49,7 +49,7 @@ public class UserDaoImpl implements Dao<Long, User> {
             """;
     private static String SAVE_SQL = """
             INSERT INTO users (username, email, phone_number, password) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?)
             """;
     private static String DELETE_SQL = """
             DELETE FROM users
@@ -72,7 +72,8 @@ public class UserDaoImpl implements Dao<Long, User> {
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
             statement.setString(4, user.getPassword());
-            statement.setLong(5, user.getId());
+            statement.setBigDecimal(5, user.getMoney());
+            statement.setLong(6, user.getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -105,7 +106,7 @@ public class UserDaoImpl implements Dao<Long, User> {
 
     public Optional<User> findByUserName(String userName) {
         try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+             var statement = connection.prepareStatement(FIND_BY_USERNAME_SQL)) {
             User user = null;
             statement.setString(1, userName);
             var result = statement.executeQuery();
@@ -178,7 +179,9 @@ public class UserDaoImpl implements Dao<Long, User> {
         return new User(
                 result.getLong("id"),
                 result.getString("username"),
-                positionDao.findPositionsByUserId(result.getLong("id"), result.getStatement().getConnection()),
+                positionDao.findPositionsByUserId(
+                        result.getLong("id"),
+                        result.getStatement().getConnection()),
                 result.getString("email"),
                 result.getString("phone_number"),
                 result.getString("password"),

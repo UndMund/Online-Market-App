@@ -1,7 +1,7 @@
 package org.example.dao;
 
 import org.example.entity.Product;
-import org.example.entity.StatusProduct;
+import org.example.entity.Status;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
@@ -54,7 +54,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             WHERE id = ?
             """;
     private static String SAVE_SQL = """
-            INSERT INTO product(product_name, price, description, status, category_id, user_id) 
+            INSERT INTO product(product_name, price, description, status, category_id, user_id)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
     private static String DELETE_SQL = """
@@ -70,7 +70,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             statement.setBigDecimal(2, product.getPrice());
             statement.setString(3, product.getDescription());
             statement.setString(4, product.getStatus().name());
-            statement.setString(5, product.getCategory().getCategoryName());
+            statement.setInt(5, product.getCategory().getId());
             statement.setLong(6, product.getUser().getId());
             statement.setLong(7, product.getId());
             return statement.executeUpdate() > 0;
@@ -154,7 +154,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             statement.setBigDecimal(2, product.getPrice());
             statement.setString(3, product.getDescription());
             statement.setString(4, product.getStatus().name());
-            statement.setString(5, product.getCategory().getCategoryName());
+            statement.setLong(5, product.getCategory().getId());
             statement.setLong(6, product.getUser().getId());
 
             statement.executeUpdate();
@@ -174,7 +174,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
                 result.getString("product_name"),
                 result.getBigDecimal("price"),
                 result.getString("description"),
-                StatusProduct.valueOf(result.getString("status")),
+                Status.valueOf(result.getString("status")),
                 categoryDao.findById(
                                 result.getLong("category_id"),
                                 result.getStatement().getConnection())

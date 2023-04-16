@@ -10,6 +10,7 @@ import org.example.utils.ConnectionManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,11 @@ public class CategoryDao {
     private static String SAVE_SQL = """
             INSERT INTO category (category_name)
             VALUES (?)
+            """;
+
+    private static String DELETE_SQL = """
+            DELETE FROM category
+            WHERE id = ?
             """;
 
     public List<Category> findAll() {
@@ -74,11 +80,27 @@ public class CategoryDao {
         }
     }
 
-    public boolean addCategory(Category category) {
+    public Category addCategory(Category category) {
         try (var connection = ConnectionManager.get();
              var statement = connection
-                     .prepareStatement(SAVE_SQL)) {
+                     .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, category.getCategoryName());
+            statement.executeUpdate();
+
+            var generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next())
+                category.setId(generatedKeys.getInt("id"));
+            return category;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean delete(Integer id) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(DELETE_SQL)) {
+            statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);

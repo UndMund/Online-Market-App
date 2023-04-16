@@ -16,7 +16,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private String description;
-    private StatusProduct status;
+    private Status status;
     private Category category;
     private User user;
 }
