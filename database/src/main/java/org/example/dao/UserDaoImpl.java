@@ -148,8 +148,15 @@ public class UserDaoImpl implements Dao<Long, User> {
 
     @Override
     public User save(User user) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection
+        try (var connection = ConnectionManager.get()) {
+            return save(user, connection);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public User save(User user, Connection connection) {
+        try (var statement = connection
                      .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());

@@ -36,7 +36,8 @@ CREATE TABLE position
 CREATE TABLE user_position
 (
     user_id BIGINT REFERENCES users(id) ON DELETE CASCADE NOT NULL ,
-    position_id INT REFERENCES position(id) NOT NULL
+    position_id INT REFERENCES position(id) NOT NULL,
+    UNIQUE (user_id, position_id)
 );
 
 INSERT INTO users(username, email, phone_number, password)
