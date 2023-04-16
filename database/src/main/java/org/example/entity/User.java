@@ -1,12 +1,17 @@
 package org.example.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
     private Long id;
     private String userName;
-    private PositionUser position;
+    private List<Position> positions;
     private String email;
     private String phoneNumber;
     private String password;
@@ -15,14 +20,17 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String userName, PositionUser position, String email, String phoneNumber, String password, BigDecimal money) {
-        this.id = id;
-        this.userName = userName;
-        this.position = position;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.money = money;
+    @Override
+    public String toString() {
+        return "User{" +
+               "id=" + id +
+               ", userName='" + userName + '\'' +
+               ", positions=" + positions +
+               ", email='" + email + '\'' +
+               ", phoneNumber='" + phoneNumber + '\'' +
+               ", password='" + password + '\'' +
+               ", money=" + money +
+               '}';
     }
 
     @Override
@@ -30,25 +38,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && position == user.position && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(password, user.password) && Objects.equals(money, user.money);
+        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && Objects.equals(positions, user.positions) && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(password, user.password) && Objects.equals(money, user.money);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, position, email, phoneNumber, password, money);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-               "id=" + id +
-               ", userName='" + userName + '\'' +
-               ", position=" + position +
-               ", email='" + email + '\'' +
-               ", phoneNumber='" + phoneNumber + '\'' +
-               ", password='" + password + '\'' +
-               ", money=" + money +
-               '}';
+        return Objects.hash(id, userName, positions, email, phoneNumber, password, money);
     }
 
     public Long getId() {
@@ -67,12 +62,12 @@ public class User {
         this.userName = userName;
     }
 
-    public PositionUser getPosition() {
-        return position;
+    public List<Position> getPositions() {
+        return positions;
     }
 
-    public void setPosition(PositionUser position) {
-        this.position = position;
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
     }
 
     public String getEmail() {
@@ -104,6 +99,16 @@ public class User {
     }
 
     public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    public User(Long id, String userName, List<Position> positions, String email, String phoneNumber, String password, BigDecimal money) {
+        this.id = id;
+        this.userName = userName;
+        this.positions = positions;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
         this.money = money;
     }
 }

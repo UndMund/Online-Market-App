@@ -14,15 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductDao implements Dao<Long, Product> {
-    private static final ProductDao INSTANCE = new ProductDao();
+public class ProductDaoImpl implements Dao<Long, Product> {
+    private static final ProductDaoImpl INSTANCE = new ProductDaoImpl();
 
-    private static final UserDao userDao = UserDao.getINSTANCE();
+    public static final UserDaoImpl USER_DAO_IMPL = UserDaoImpl.getINSTANCE();
 
-    private ProductDao() {
+    private ProductDaoImpl() {
     }
 
-    public static ProductDao getINSTANCE() {
+    public static ProductDaoImpl getINSTANCE() {
         return INSTANCE;
     }
 
@@ -178,7 +178,7 @@ public class ProductDao implements Dao<Long, Product> {
                 result.getString("description"),
                 StatusProduct.valueOf(result.getString("status")),
                 CategoryProduct.valueOf(result.getString("category")),
-                userDao.findById(
+                USER_DAO_IMPL.findById(
                                 result.getLong("id"),
                                 result.getStatement().getConnection())
                         .orElse(null)

@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import org.example.entity.PositionUser;
 import org.example.entity.User;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
@@ -13,20 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDao implements Dao<Long, User> {
-    private static final UserDao INSTANCE = new UserDao();
+public class UserDaoImpl implements Dao<Long, User> {
+    private static final PositionDao positionDao = PositionDao.getINSTANCE();
+    private static final UserDaoImpl INSTANCE = new UserDaoImpl();
 
-    private UserDao() {
+    private UserDaoImpl() {
     }
 
-    public static UserDao getINSTANCE() {
+    public static UserDaoImpl getINSTANCE() {
         return INSTANCE;
     }
 
     private static String FIND_ALL_SQL = """
             SELECT id,
-                username,
-                position,
+                username,         
                 email,
                 phone_number,
                 password,
@@ -36,10 +35,12 @@ public class UserDao implements Dao<Long, User> {
     private static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id = ?
             """;
+    private static String FIND_BY_USERNAME_SQL = FIND_ALL_SQL + """
+            WHERE username = ?
+            """;
     private static String UPDATE_BY_ID_SQL = """
             UPDATE users
             SET username = ?,
-                position = ?,
                 email = ?,
                 phone_number = ?,
                 password = ?,
@@ -47,13 +48,14 @@ public class UserDao implements Dao<Long, User> {
             WHERE id = ?  
             """;
     private static String SAVE_SQL = """
-            INSERT INTO users (username, position, email, phone_number, password) 
+            INSERT INTO users (username, email, phone_number, password) 
             VALUES (?, ?, ?, ?, ?)
             """;
     private static String DELETE_SQL = """
             DELETE FROM users
             WHERE id = ?
             """;
+
 
     @Override
     public boolean updateById(User user) {
@@ -67,11 +69,10 @@ public class UserDao implements Dao<Long, User> {
     public boolean updateById(User user, Connection connection) {
         try (var statement = connection.prepareStatement(UPDATE_BY_ID_SQL)) {
             statement.setString(1, user.getUserName());
-            statement.setString(2, user.getPosition().name());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPhoneNumber());
-            statement.setString(5, user.getPassword());
-            statement.setLong(6, user.getId());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPhoneNumber());
+            statement.setString(4, user.getPassword());
+            statement.setLong(5, user.getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -102,8 +103,20 @@ public class UserDao implements Dao<Long, User> {
         }
     }
 
-    public Optional<User> findByLogin(String login) {
-        return Optional.empty();
+    public Optional<User> findByUserName(String userName) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+            User user = null;
+            statement.setString(1, userName);
+            var result = statement.executeQuery();
+            if (result.next()) {
+                user = buildUser(result);
+            }
+            return Optional.ofNullable(user);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
     }
 
     @Override
@@ -139,10 +152,9 @@ public class UserDao implements Dao<Long, User> {
              var statement = connection
                      .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getUserName());
-            statement.setString(2, user.getPosition().name());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPhoneNumber());
-            statement.setString(5, user.getPassword());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPhoneNumber());
+            statement.setString(4, user.getPassword());
 
             statement.executeUpdate();
 
@@ -155,11 +167,13 @@ public class UserDao implements Dao<Long, User> {
         }
     }
 
+
+
     private User buildUser(ResultSet result) throws SQLException {
         return new User(
                 result.getLong("id"),
                 result.getString("username"),
-                PositionUser.valueOf(result.getString("position")),
+                positionDao.findPositionsByUserId(result.getLong("id"), result.getStatement().getConnection()),
                 result.getString("email"),
                 result.getString("phone_number"),
                 result.getString("password"),

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderDao implements Dao<Long, Order> {
-    private final static OrderDao INSTANCE = new OrderDao();
-    private final static UserDao userDao = UserDao.getINSTANCE();
-    private final static ProductDao productDao = ProductDao.getINSTANCE();
+public class OrderDaoImpl implements Dao<Long, Order> {
+    private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
+    private final static UserDaoImpl USER_DAO_IMPL = UserDaoImpl.getINSTANCE();
+    private final static ProductDaoImpl PRODUCT_DAO_IMPL = ProductDaoImpl.getINSTANCE();
 
     private static String FIND_ALL_SQL = """
             SELECT 
@@ -43,10 +43,10 @@ public class OrderDao implements Dao<Long, Order> {
             WHERE id = ?
             """;
 
-    private OrderDao() {
+    private OrderDaoImpl() {
     }
 
-    public static OrderDao getINSTANCE() {
+    public static OrderDaoImpl getINSTANCE() {
         return INSTANCE;
     }
 
@@ -149,11 +149,11 @@ public class OrderDao implements Dao<Long, Order> {
     private Order buildOrder(ResultSet result) throws SQLException {
         return new Order(
                 result.getLong("id"),
-                productDao.findById(
+                PRODUCT_DAO_IMPL.findById(
                                 result.getLong("product_id"),
                                 result.getStatement().getConnection())
                         .orElse(null),
-                userDao.findById(
+                USER_DAO_IMPL.findById(
                                 result.getLong("customer_id"),
                                 result.getStatement().getConnection())
                         .orElse(null)

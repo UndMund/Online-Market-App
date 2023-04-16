@@ -2,7 +2,6 @@ CREATE TABLE users
 (
     id            SERIAL PRIMARY KEY,
     username      VARCHAR(32) UNIQUE NOT NULL,
-    position      VARCHAR(16) NOT NULL,
     email         VARCHAR(128) UNIQUE,
     phone_number  VARCHAR(16) UNIQUE,
     password      VARCHAR(32)        NOT NULL,
@@ -28,11 +27,23 @@ CREATE TABLE orders
     customer_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL
 );
 
-INSERT INTO users(username, position, email, phone_number, password)
-VALUES ('Nazar', 'ADMIN', 'zavadskiy.nazar@mail.ru', '+375336328517', '12345678'),
-       ('Oleg', 'USER', 'oleg2001@gmail.com', '+375296788943', '87654321'),
-       ('Inna',  'USER','innaOreh@mail.ru', '+375444562368', '12344321'),
-       ('Petya', 'USER', 'petyaEt@mail.ru', '+375293452334', '56788765');
+CREATE TABLE position
+(
+    id SERIAL PRIMARY KEY ,
+    position_name VARCHAR(32) UNIQUE NOT NULL
+);
+
+CREATE TABLE user_position
+(
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE NOT NULL ,
+    position_id INT REFERENCES position(id) NOT NULL
+);
+
+INSERT INTO users(username, email, phone_number, password)
+VALUES ('Nazar', 'zavadskiy.nazar@mail.ru', '+375336328517', '12345678'),
+       ('Oleg', 'oleg2001@gmail.com', '+375296788943', '87654321'),
+       ('Inna', 'innaOreh@mail.ru', '+375444562368', '12344321'),
+       ('Petya',' petyaEt@mail.ru', '+375293452334', '56788765');
 
 INSERT INTO product(product_name, price, description, status, category, user_id)
 VALUES ('Xiaomi Mi 11 Lite', 300, 'Работает прекрасно, использовался 2 года', 'ON_SALE','PHONE', 1),
@@ -43,4 +54,15 @@ VALUES ('Xiaomi Mi 11 Lite', 300, 'Работает прекрасно, испо
 
 INSERT INTO orders(product_id, customer_id)
 VALUES (2, 4),
+       (4, 2);
+
+INSERT INTO position(position_name)
+VALUES ('ADMIN'),
+       ('USER');
+
+INSERT INTO user_position(user_id, position_id)
+VALUES (1, 1),
+       (1, 2),
+       (2, 2),
+       (3, 2),
        (4, 2);
