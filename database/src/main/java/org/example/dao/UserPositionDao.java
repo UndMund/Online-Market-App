@@ -4,10 +4,7 @@ import org.example.entity.*;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserPositionDao {
     public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();

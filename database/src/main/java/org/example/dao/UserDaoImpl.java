@@ -174,8 +174,6 @@ public class UserDaoImpl implements Dao<Long, User> {
         }
     }
 
-
-
     private User buildUser(ResultSet result) throws SQLException {
         return new User(
                 result.getLong("id"),
@@ -187,6 +185,4 @@ public class UserDaoImpl implements Dao<Long, User> {
                 result.getBigDecimal("money_balance")
         );
     }
-
-
 }

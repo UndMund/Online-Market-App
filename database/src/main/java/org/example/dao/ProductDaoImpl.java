@@ -15,7 +15,6 @@ import java.util.Optional;
 
 public class ProductDaoImpl implements Dao<Long, Product> {
     private static final ProductDaoImpl INSTANCE = new ProductDaoImpl();
-
     public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
     public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
 
@@ -74,7 +73,6 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             statement.setString(5, product.getCategory().getCategoryName());
             statement.setLong(6, product.getUser().getId());
             statement.setLong(7, product.getId());
-
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);

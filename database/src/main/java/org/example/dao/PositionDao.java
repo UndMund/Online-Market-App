@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public class PositionDao {
     private static final PositionDao INSTANCE = new PositionDao();
-
     private PositionDao() {
     }
 
@@ -38,7 +37,6 @@ public class PositionDao {
             ON p.id = up.position_id
             WHERE up.user_id = ?
             """;
-
 
     public List<Position> findAll() {
         List<Position> positions = new ArrayList<>();
