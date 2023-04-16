@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class OrderDaoImpl implements Dao<Long, Order> {
     private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
-    private final static UserDaoImpl USER_DAO_IMPL = UserDaoImpl.getINSTANCE();
+    private final static UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
     private final static ProductDaoImpl PRODUCT_DAO_IMPL = ProductDaoImpl.getINSTANCE();
 
     private static String FIND_ALL_SQL = """
@@ -153,7 +153,7 @@ public class OrderDaoImpl implements Dao<Long, Order> {
                                 result.getLong("product_id"),
                                 result.getStatement().getConnection())
                         .orElse(null),
-                USER_DAO_IMPL.findById(
+                userDao.findById(
                                 result.getLong("customer_id"),
                                 result.getStatement().getConnection())
                         .orElse(null)

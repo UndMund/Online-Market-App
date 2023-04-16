@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
+import org.example.entity.Category;
 import org.example.entity.Position;
 import org.example.entity.User;
 import org.example.exception.DaoException;
@@ -12,48 +14,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PositionDao {
-    private static final PositionDao INSTANCE = new PositionDao();
+public class CategoryDao {
+    private static final CategoryDao INSTANCE = new CategoryDao();
 
-    private PositionDao() {
+    private CategoryDao() {
     }
 
-    public static PositionDao getINSTANCE() {
+    public static CategoryDao getINSTANCE() {
         return INSTANCE;
     }
 
     private static String FIND_ALL_SQL = """
-            SELECT id, position_name         
-            FROM position
+            SELECT id, category_name         
+            FROM category
             """;
 
     private static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id = ?
             """;
 
-    private static String FIND_POSITION_BY_USER= """
-            SELECT p.id 
-            FROM position p 
-            JOIN user_position up 
-            ON p.id = up.position_id
-            WHERE up.user_id = ?
+    private static String SAVE_SQL = """
+            INSERT INTO category (category_name)
+            VALUES (?)
             """;
 
-
-    public List<Position> findAll() {
-        List<Position> positions = new ArrayList<>();
+    public List<Category> findAll() {
+        List<Category> categories = new ArrayList<>();
         try (var connection = ConnectionManager.get();
              var statement = connection.prepareStatement(FIND_ALL_SQL)) {
             var result = statement.executeQuery();
             while (result.next()) {
-                positions.add(buildPosition(result));
+                categories.add(buildCategory(result));
             }
-            return positions;
+            return categories;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
-    public Optional<Position> findById(Long id) {
+
+    public Optional<Category> findById(Long id) {
         try (var connection = ConnectionManager.get()) {
             return findById(id, connection);
         } catch (SQLException e) {
@@ -61,38 +60,36 @@ public class PositionDao {
         }
     }
 
-    public Optional<Position> findById(Long id, Connection connection) {
+    public Optional<Category> findById(Long id, Connection connection) {
         try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
-            Position position = null;
+            Category category= null;
             statement.setLong(1, id);
             var result = statement.executeQuery();
             if (result.next()) {
-                position = buildPosition(result);
+                category = buildCategory(result);
             }
-            return Optional.ofNullable(position);
+            return Optional.ofNullable(category);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    public List<Position> findPositionsByUserId(Long id, Connection connection) {
-        try (var statement = connection.prepareStatement(FIND_POSITION_BY_USER)) {
-            List<Position> positions = new ArrayList<>();
-            statement.setLong(1, id);
-            var result = statement.executeQuery();
-            while (result.next()) {
-                positions.add(buildPosition(result));
-            }
-            return positions;
+    public boolean addCategory(Category category) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(SAVE_SQL)) {
+            statement.setString(1, category.getCategoryName());
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    private Position buildPosition(ResultSet result) throws SQLException {
-        return new Position(
+    private Category buildCategory(ResultSet result) throws SQLException {
+        return new Category(
                 result.getInt("id"),
-                result.getString("position_name")
+                result.getString("category_name")
         );
     }
+
 }

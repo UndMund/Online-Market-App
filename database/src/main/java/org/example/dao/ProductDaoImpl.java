@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import org.example.entity.CategoryProduct;
 import org.example.entity.Product;
 import org.example.entity.StatusProduct;
 import org.example.exception.DaoException;
@@ -17,7 +16,8 @@ import java.util.Optional;
 public class ProductDaoImpl implements Dao<Long, Product> {
     private static final ProductDaoImpl INSTANCE = new ProductDaoImpl();
 
-    public static final UserDaoImpl USER_DAO_IMPL = UserDaoImpl.getINSTANCE();
+    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
+    public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
 
     private ProductDaoImpl() {
     }
@@ -33,7 +33,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             price,
             description,
             status,
-            category,
+            category_id,
             user_id
             FROM product
             """;
@@ -50,12 +50,12 @@ public class ProductDaoImpl implements Dao<Long, Product> {
                 price = ?,
                 description = ?,
                 status = ?,
-                category = ?,
+                category_id = ?,
                 user_id = ?
             WHERE id = ?
             """;
     private static String SAVE_SQL = """
-            INSERT INTO product(product_name, price, description, status, category, user_id) 
+            INSERT INTO product(product_name, price, description, status, category_id, user_id) 
             VALUES (?, ?, ?, ?, ?, ?)
             """;
     private static String DELETE_SQL = """
@@ -71,7 +71,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             statement.setBigDecimal(2, product.getPrice());
             statement.setString(3, product.getDescription());
             statement.setString(4, product.getStatus().name());
-            statement.setString(5, product.getCategory().name());
+            statement.setString(5, product.getCategory().getCategoryName());
             statement.setLong(6, product.getUser().getId());
             statement.setLong(7, product.getId());
 
@@ -156,7 +156,7 @@ public class ProductDaoImpl implements Dao<Long, Product> {
             statement.setBigDecimal(2, product.getPrice());
             statement.setString(3, product.getDescription());
             statement.setString(4, product.getStatus().name());
-            statement.setString(5, product.getCategory().name());
+            statement.setString(5, product.getCategory().getCategoryName());
             statement.setLong(6, product.getUser().getId());
 
             statement.executeUpdate();
@@ -177,8 +177,11 @@ public class ProductDaoImpl implements Dao<Long, Product> {
                 result.getBigDecimal("price"),
                 result.getString("description"),
                 StatusProduct.valueOf(result.getString("status")),
-                CategoryProduct.valueOf(result.getString("category")),
-                USER_DAO_IMPL.findById(
+                categoryDao.findById(
+                                result.getLong("category_id"),
+                                result.getStatement().getConnection())
+                        .orElse(null),
+                userDao.findById(
                                 result.getLong("id"),
                                 result.getStatement().getConnection())
                         .orElse(null)
