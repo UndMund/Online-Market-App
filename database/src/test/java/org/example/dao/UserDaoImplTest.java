@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.dao.DeleteSql.*;
+
 
 public class UserDaoImplTest extends TestCase {
     private static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
@@ -36,8 +38,13 @@ public class UserDaoImplTest extends TestCase {
 
     @AfterAll
     public void tearDown() {
-        for (User user1 : userDao.findAll()) {
-            userDao.delete(user1.getId());
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(DELETE_USERS_SQL))
+        {
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
     }
 

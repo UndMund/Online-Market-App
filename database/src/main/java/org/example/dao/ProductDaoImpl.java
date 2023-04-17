@@ -176,11 +176,11 @@ public class ProductDaoImpl implements Dao<Long, Product> {
                 result.getString("description"),
                 Status.valueOf(result.getString("status")),
                 categoryDao.findById(
-                                result.getLong("category_id"),
+                                result.getInt("category_id"),
                                 result.getStatement().getConnection())
                         .orElse(null),
                 userDao.findById(
-                                result.getLong("id"),
+                                result.getLong("user_id"),
                                 result.getStatement().getConnection())
                         .orElse(null)
         );

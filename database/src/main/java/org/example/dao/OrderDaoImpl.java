@@ -99,7 +99,7 @@ public class OrderDaoImpl implements Dao<Long, Order> {
         }
     }
 
-    public List<Order> findAllByUserId(Long userId) {
+    public List<Order> findAllByCustomerId(Long userId) {
         try (var connection = ConnectionManager.get();
              var statement = connection.prepareStatement(FIND_ALL_BY_USER_ID_SQL)) {
             List<Order> orders = new ArrayList<>();

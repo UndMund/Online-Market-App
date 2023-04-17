@@ -6,13 +6,12 @@ import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+
+import static org.example.dao.DeleteSql.*;
 
 public class ProductDaoImplTest extends TestCase {
 
@@ -67,15 +66,14 @@ public class ProductDaoImplTest extends TestCase {
 
     @After
     public void tearDown() {
-            for (User user1 : userDao.findAll()) {
-                userDao.delete(user1.getId());
-            }
-            for (Product product1 : productDao.findAll()) {
-                productDao.delete(product1.getId());
-            }
-            for (Category category1 : categoryDao.findAll()) {
-                categoryDao.delete(category1.getId());
-            }
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(DELETE_USERS_SQL + DELETE_PRODUCT_SQL + DELETE_CATEGORY_SQL))
+        {
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     public void testUpdateById() {

@@ -14,7 +14,7 @@ public class UserPositionDao {
     private UserPositionDao() {
     }
 
-    public static UserPositionDao getInstance() {
+    public static UserPositionDao getINSTANCE() {
         return INSTANCE;
     }
 

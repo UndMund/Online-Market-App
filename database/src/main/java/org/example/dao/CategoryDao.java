@@ -58,7 +58,7 @@ public class CategoryDao {
         }
     }
 
-    public Optional<Category> findById(Long id) {
+    public Optional<Category> findById(Integer id) {
         try (var connection = ConnectionManager.get()) {
             return findById(id, connection);
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class CategoryDao {
         }
     }
 
-    public Optional<Category> findById(Long id, Connection connection) {
+    public Optional<Category> findById(Integer id, Connection connection) {
         try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             Category category= null;
             statement.setLong(1, id);

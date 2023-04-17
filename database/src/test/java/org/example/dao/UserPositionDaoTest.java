@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import static org.example.dao.DeleteSql.*;
 import static org.junit.Assert.*;
 
 import org.example.entity.*;
@@ -8,7 +9,6 @@ import org.example.utils.ConnectionManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 
 
 import java.math.BigDecimal;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class UserPositionDaoTest {
     public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
     public static final PositionDao positionDao = PositionDao.getINSTANCE();
-    public static final UserPositionDao userPositionDao = UserPositionDao.getInstance();
+    public static final UserPositionDao userPositionDao = UserPositionDao.getINSTANCE();
 
     public static User user = new User(1L,
             "Ale",
@@ -41,26 +41,14 @@ public class UserPositionDaoTest {
 
     @After
     public void tearDown() {
-        for (User user1 : userDao.findAll()) {
-            userDao.delete(user1.getId());
+        try (var connection = ConnectionManager.get();
+             var statement = connection
+                     .prepareStatement(DELETE_USER_POSITION_SQL + DELETE_USERS_SQL + DELETE_POSITION_SQL))
+        {
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
-        for (Position position1 : positionDao.findAll()) {
-           positionDao.delete(position1.getId());
-        }
-        String DELETE_SQL = """
-                DELETE FROM user_position
-                WHERE position_id = ?
-                AND user_id = ?
-                """;
-            try (var connection = ConnectionManager.get();
-                 var statement = connection
-                         .prepareStatement(DELETE_SQL)) {
-                statement.setLong(1, position.getId());
-                statement.setLong(2, user.getId());
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
     }
 
     @Test

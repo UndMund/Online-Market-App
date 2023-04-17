@@ -80,7 +80,7 @@ public class PositionDao {
         }
     }
 
-    public Optional<Position> findById(Long id) {
+    public Optional<Position> findById(Integer id) {
         try (var connection = ConnectionManager.get()) {
             return findById(id, connection);
         } catch (SQLException e) {
@@ -88,10 +88,10 @@ public class PositionDao {
         }
     }
 
-    public Optional<Position> findById(Long id, Connection connection) {
+    public Optional<Position> findById(Integer id, Connection connection) {
         try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             Position position = null;
-            statement.setLong(1, id);
+            statement.setInt(1, id);
             var result = statement.executeQuery();
             if (result.next()) {
                 position = buildPosition(result);
