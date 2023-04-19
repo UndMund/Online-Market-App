@@ -16,10 +16,7 @@ public class DeleteSql {
     String DELETE_ORDERS_SQL = """
                 TRUNCATE TABLE orders CASCADE;                            
                 """;
-    String DELETE_POSITION_SQL = """
-                TRUNCATE TABLE position CASCADE;                             
-                """;
     String DELETE_USER_POSITION_SQL = """
-                TRUNCATE TABLE user_position CASCADE;                          
+                TRUNCATE TABLE user_position;                          
                 """;
 }

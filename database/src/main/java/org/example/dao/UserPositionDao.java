@@ -1,18 +1,19 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
 import org.example.entity.*;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
 import java.sql.SQLException;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class UserPositionDao {
     public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
     public static final PositionDao positionDao = PositionDao.getINSTANCE();
     private static final UserPositionDao INSTANCE = new UserPositionDao();
-
-    private UserPositionDao() {
-    }
 
     public static UserPositionDao getINSTANCE() {
         return INSTANCE;

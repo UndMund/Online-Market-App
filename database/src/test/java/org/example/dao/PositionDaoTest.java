@@ -29,37 +29,17 @@ public class PositionDaoTest {
             "+47423999483",
             "1234",
             BigDecimal.ONE);
-    private static User user2 = new User(
-            1L,
-            "Ale",
-            new ArrayList<>(),
-            "ale@mail.ru",
-            "+4743999483",
-            "1234",
-            BigDecimal.ONE);
-
-    private static Position position1 = new Position(
-            1,
-            "ADMIN"
-    );
-
-    private static Position position2 = new Position(
-            1,
-            "USER"
-    );
 
     @Before
     public void setUp() throws Exception {
         user1 = userDao.save(user1);
-        position1 = positionDao.save(position1);
-        userPositionDao.addUserPosition(user1, position1);
     }
 
     @After
     public void tearDown() throws Exception {
         try (var connection = ConnectionManager.get();
              var statement = connection
-                     .prepareStatement(DELETE_USER_POSITION_SQL + DELETE_USERS_SQL + DELETE_POSITION_SQL)) {
+                     .prepareStatement(DELETE_USER_POSITION_SQL + DELETE_USERS_SQL)) {
             statement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -67,42 +47,22 @@ public class PositionDaoTest {
     }
 
     @Test
-    public void save() {
-        assertEquals(1, positionDao.findAll().size());
-        position2 = positionDao.save(position2);
-        assertEquals(2, positionDao.findAll().size());
-    }
-
-    @Test
-    public void findAll() {
-        position2 = positionDao.save(position2);
-        assertEquals(2, positionDao.findAll().size());
-    }
-
-    @Test
     public void findById() {
-        assertEquals(1, positionDao.findAll().size());
-        position2 = positionDao.save(position2);
-        assertEquals(2, positionDao.findAll().size());
-        assertEquals(position1, positionDao.findById(position1.getId()).get());
-    }
-
-    @Test
-    public void delete() {
-        assertEquals(1, positionDao.findAll().size());
-        position2 = positionDao.save(position2);
-        assertEquals(2, positionDao.findAll().size());
-        positionDao.delete(position2.getId());
-        assertEquals(1, positionDao.findAll().size());
+        try (var connection = ConnectionManager.get()) {
+            assertEquals(Position.ADMIN, positionDao.findById(1, connection).get());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Test
     public void findPositionsByUserId() {
-        position2 = positionDao.save(position2);
-        userPositionDao.addUserPosition(user1, position2);
+        userPositionDao.addUserPosition(user1, Position.ADMIN);
+        userPositionDao.addUserPosition(user1, Position.USER);
         try (var connection = ConnectionManager.get()) {
-             List<Position> userPositions = positionDao.findPositionsByUserId(user1.getId(), connection);
-             assertEquals(userPositions, positionDao.findAll());
+             List<Position> positions = positionDao.findPositionsByUserId(user1.getId(), connection);
+             assertTrue(positions.contains(Position.USER));
+             assertTrue(positions.contains(Position.ADMIN));
         } catch (SQLException e) {
             throw new DaoException(e);
         }

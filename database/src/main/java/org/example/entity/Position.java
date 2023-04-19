@@ -1,15 +1,22 @@
 package org.example.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Arrays;
+import java.util.Optional;
 
-import java.util.Objects;
+public enum Position {
+    ADMIN(1),
+    USER(2);
+    private final Integer id;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Position {
-    private Integer id;
-    private String positionName;
+    Position(Integer id) {
+        this.id = id;
+    }
+    public static Optional<Position> find(String role) {
+        return Arrays.stream(values())
+                .filter(it -> it.name().equals(role))
+                .findFirst();
+    }
+    public Integer getId() {
+        return id;
+    }
 }

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
 import org.example.entity.User;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
@@ -12,13 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class UserDaoImpl implements Dao<Long, User> {
     private static final PositionDao positionDao = PositionDao.getINSTANCE();
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-
-    private UserDaoImpl() {
-    }
-
     public static UserDaoImpl getINSTANCE() {
         return INSTANCE;
     }

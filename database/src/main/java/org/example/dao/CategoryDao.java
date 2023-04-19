@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class CategoryDao {
     private static final CategoryDao INSTANCE = new CategoryDao();
-
-    private CategoryDao() {
-    }
 
     public static CategoryDao getINSTANCE() {
         return INSTANCE;

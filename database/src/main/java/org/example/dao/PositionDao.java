@@ -1,23 +1,21 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
 import org.example.entity.Position;
-import org.example.entity.User;
 import org.example.exception.DaoException;
-import org.example.utils.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class PositionDao {
     private static final PositionDao INSTANCE = new PositionDao();
-
-    private PositionDao() {
-    }
 
     public static PositionDao getINSTANCE() {
         return INSTANCE;
@@ -39,54 +37,7 @@ public class PositionDao {
             ON p.id = up.position_id
             WHERE up.user_id = ?
             """;
-    private static String SAVE_SQL = """
-            INSERT INTO position (position_name) 
-            VALUES (?)
-            """;
 
-    private static String DELETE_SQL = """
-            DELETE FROM position
-            WHERE id = ?
-            """;
-
-    public Position save(Position position) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection
-                     .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, position.getPositionName());
-
-            statement.executeUpdate();
-
-            var generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next())
-                position.setId(generatedKeys.getInt("id"));
-            return position;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public List<Position> findAll() {
-        List<Position> positions = new ArrayList<>();
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(FIND_ALL_SQL)) {
-            var result = statement.executeQuery();
-            while (result.next()) {
-                positions.add(buildPosition(result));
-            }
-            return positions;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public Optional<Position> findById(Integer id) {
-        try (var connection = ConnectionManager.get()) {
-            return findById(id, connection);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
 
     public Optional<Position> findById(Integer id, Connection connection) {
         try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -97,17 +48,6 @@ public class PositionDao {
                 position = buildPosition(result);
             }
             return Optional.ofNullable(position);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public boolean delete(Integer id) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection
-                     .prepareStatement(DELETE_SQL)) {
-            statement.setLong(1, id);
-            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -128,9 +68,6 @@ public class PositionDao {
     }
 
     private Position buildPosition(ResultSet result) throws SQLException {
-        return new Position(
-                result.getInt("id"),
-                result.getString("position_name")
-        );
+        return Position.find(result.getString("position_name")).get();
     }
 }

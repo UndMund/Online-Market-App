@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
 import org.example.entity.Product;
 import org.example.entity.Status;
 import org.example.exception.DaoException;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class ProductDaoImpl implements Dao<Long, Product> {
     private static final ProductDaoImpl INSTANCE = new ProductDaoImpl();
     public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
     public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
-
-    private ProductDaoImpl() {
-    }
 
     public static ProductDaoImpl getINSTANCE() {
         return INSTANCE;
