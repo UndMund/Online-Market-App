@@ -6,7 +6,6 @@ import org.example.utils.ConnectionManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.osgi.PGDataSourceFactory;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -17,10 +16,10 @@ import static org.junit.Assert.*;
 
 public class OrderDaoImplTest {
 
-    public static final ProductDaoImpl productDao = ProductDaoImpl.getINSTANCE();
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
-    public static final OrderDaoImpl orderDao = OrderDaoImpl.getINSTANCE();
+    public static final ProductDaoImpl productDao = ProductDaoImpl.getInstance();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final CategoryDao categoryDao = CategoryDao.getInstance();
+    public static final OrderDaoImpl orderDao = OrderDaoImpl.getInstance();
 
     private static User user1 = new User(
             1L,

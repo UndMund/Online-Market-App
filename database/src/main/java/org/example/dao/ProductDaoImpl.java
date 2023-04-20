@@ -19,10 +19,10 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public class ProductDaoImpl implements Dao<Long, Product> {
     private static final ProductDaoImpl INSTANCE = new ProductDaoImpl();
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final CategoryDao categoryDao = CategoryDao.getInstance();
 
-    public static ProductDaoImpl getINSTANCE() {
+    public static ProductDaoImpl getInstance() {
         return INSTANCE;
     }
 

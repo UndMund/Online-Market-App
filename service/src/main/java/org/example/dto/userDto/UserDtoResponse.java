@@ -2,9 +2,7 @@ package org.example.dto.userDto;
 
 import lombok.Builder;
 import lombok.Value;
-import org.example.entity.Position;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Value
@@ -15,5 +13,4 @@ public class UserDtoResponse {
     String email;
     String phoneNumber;
     String password;
-    String money;
 }

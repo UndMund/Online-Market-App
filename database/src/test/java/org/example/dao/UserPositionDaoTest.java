@@ -16,9 +16,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserPositionDaoTest {
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final PositionDao positionDao = PositionDao.getINSTANCE();
-    public static final UserPositionDao userPositionDao = UserPositionDao.getINSTANCE();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final PositionDao positionDao = PositionDao.getInstance();
+    public static final UserPositionDao userPositionDao = UserPositionDao.getInstance();
 
     public static User user = new User(1L,
             "Ale",

@@ -17,8 +17,8 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public class OrderDaoImpl implements Dao<Long, Order> {
     private final static OrderDaoImpl INSTANCE = new OrderDaoImpl();
-    private final static UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    private final static ProductDaoImpl PRODUCT_DAO_IMPL = ProductDaoImpl.getINSTANCE();
+    private final static UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private final static ProductDaoImpl PRODUCT_DAO_IMPL = ProductDaoImpl.getInstance();
 
     private static String FIND_ALL_SQL = """
             SELECT 
@@ -47,7 +47,7 @@ public class OrderDaoImpl implements Dao<Long, Order> {
             WHERE id = ?
             """;
 
-    public static OrderDaoImpl getINSTANCE() {
+    public static OrderDaoImpl getInstance() {
         return INSTANCE;
     }
 

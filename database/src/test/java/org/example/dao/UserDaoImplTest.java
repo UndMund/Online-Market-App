@@ -1,24 +1,20 @@
 package org.example.dao;
 
 import junit.framework.TestCase;
-import org.example.entity.Position;
 import org.example.entity.User;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.example.dao.DeleteSql.*;
 
 
 public class UserDaoImplTest extends TestCase {
-    private static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
+    private static final UserDaoImpl userDao = UserDaoImpl.getInstance();
     private static User user1 = new User(
             1L,
             "Alex",

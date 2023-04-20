@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class PositionDao {
     private static final PositionDao INSTANCE = new PositionDao();
 
-    public static PositionDao getINSTANCE() {
+    public static PositionDao getInstance() {
         return INSTANCE;
     }
 

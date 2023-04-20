@@ -2,8 +2,6 @@ package org.example.dao;
 
 import lombok.NoArgsConstructor;
 import org.example.entity.Category;
-import org.example.entity.Position;
-import org.example.entity.User;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
@@ -21,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class CategoryDao {
     private static final CategoryDao INSTANCE = new CategoryDao();
 
-    public static CategoryDao getINSTANCE() {
+    public static CategoryDao getInstance() {
         return INSTANCE;
     }
 

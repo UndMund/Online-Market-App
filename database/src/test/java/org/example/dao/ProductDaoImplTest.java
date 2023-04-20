@@ -15,9 +15,9 @@ import static org.example.dao.DeleteSql.*;
 
 public class ProductDaoImplTest extends TestCase {
 
-    public static final ProductDaoImpl productDao = ProductDaoImpl.getINSTANCE();
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
+    public static final ProductDaoImpl productDao = ProductDaoImpl.getInstance();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final CategoryDao categoryDao = CategoryDao.getInstance();
 
     public static User user1 = new User(1L,
             "Ale",

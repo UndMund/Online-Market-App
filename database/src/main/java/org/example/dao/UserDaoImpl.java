@@ -17,9 +17,10 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserDaoImpl implements Dao<Long, User> {
-    private static final PositionDao positionDao = PositionDao.getINSTANCE();
+    private static final PositionDao positionDao = PositionDao.getInstance();
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-    public static UserDaoImpl getINSTANCE() {
+
+    public static UserDaoImpl getInstance() {
         return INSTANCE;
     }
 
@@ -158,7 +159,7 @@ public class UserDaoImpl implements Dao<Long, User> {
 
     public User save(User user, Connection connection) {
         try (var statement = connection
-                     .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+                .prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
@@ -167,8 +168,10 @@ public class UserDaoImpl implements Dao<Long, User> {
             statement.executeUpdate();
 
             var generatedKeys = statement.getGeneratedKeys();
+            
             if (generatedKeys.next())
                 user.setId(generatedKeys.getLong("id"));
+            
             return user;
         } catch (SQLException e) {
             throw new DaoException(e);

@@ -4,7 +4,6 @@ import org.example.entity.Category;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -13,7 +12,7 @@ import static org.example.dao.DeleteSql.*;
 import static org.junit.Assert.*;
 
 public class CategoryDaoTest {
-    public static final CategoryDao categoryDao = CategoryDao.getINSTANCE();
+    public static final CategoryDao categoryDao = CategoryDao.getInstance();
     public static Category category1 = new Category(2, "sdf");
     public static Category category2 = new Category(1, "ddd");
 

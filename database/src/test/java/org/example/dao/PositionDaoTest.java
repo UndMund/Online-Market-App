@@ -17,9 +17,9 @@ import static org.example.dao.DeleteSql.*;
 import static org.junit.Assert.*;
 
 public class PositionDaoTest {
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final PositionDao positionDao = PositionDao.getINSTANCE();
-    public static final UserPositionDao userPositionDao = UserPositionDao.getINSTANCE();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final PositionDao positionDao = PositionDao.getInstance();
+    public static final UserPositionDao userPositionDao = UserPositionDao.getInstance();
 
     private static User user1 = new User(
             1L,

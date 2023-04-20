@@ -5,17 +5,18 @@ import org.example.entity.*;
 import org.example.exception.DaoException;
 import org.example.utils.ConnectionManager;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserPositionDao {
-    public static final UserDaoImpl userDao = UserDaoImpl.getINSTANCE();
-    public static final PositionDao positionDao = PositionDao.getINSTANCE();
+    public static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    public static final PositionDao positionDao = PositionDao.getInstance();
     private static final UserPositionDao INSTANCE = new UserPositionDao();
 
-    public static UserPositionDao getINSTANCE() {
+    public static UserPositionDao getInstance() {
         return INSTANCE;
     }
 
@@ -30,15 +31,22 @@ public class UserPositionDao {
             AND   user_id = ?
             """;
 
-    public boolean addUserPosition(User user, Position position) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection
-                     .prepareStatement(SAVE_SQL)) {
+    public boolean addUserPosition(User user, Position position, Connection connection) {
+        try (var statement = connection
+                .prepareStatement(SAVE_SQL)) {
             statement.setLong(1, user.getId());
             statement.setLong(2, position.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
+        }
+    }
+
+    public boolean addUserPosition(User user, Position position) {
+        try (var connection = ConnectionManager.get()) {
+            return addUserPosition(user, position, connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
