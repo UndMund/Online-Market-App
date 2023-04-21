@@ -16,9 +16,17 @@ public final class ConnectionManager {
     private static BlockingQueue<Connection> pool;
 
     static {
+        loadDriver();
         initConnectionPool();
     }
 
+    private static void loadDriver() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private static void initConnectionPool() {
         var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
         var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);

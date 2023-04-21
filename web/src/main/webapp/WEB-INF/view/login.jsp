@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Login</title>
@@ -5,8 +8,8 @@
 <body>
 <div align="center">
     <form action="${pageContext.request.contextPath}/login" method="post">
-        <label for="email">Email:
-            <input type="text" name="email" id="email" value="${param.email}" required>
+        <label for="username">Username:
+            <input type="text" name="username" id="username">
         </label><br>
         <label for="password">Password:
             <input type="password" name="password" id="password" required>

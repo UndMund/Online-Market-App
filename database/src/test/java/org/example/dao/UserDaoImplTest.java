@@ -58,11 +58,12 @@ public class UserDaoImplTest extends TestCase {
         assertEquals(user.getId(), userDao.findById(id).get().getId());
     }
 
-    public void testFindByUserName() {
+    public void testFindByUsernameAndPassword() {
         User user = userDao.save(user1);
         String userName = user.getUserName();
+        String password = user.getPassword();
 
-        assertEquals(user.getId(), userDao.findByUserName(userName).get().getId());
+        assertEquals(user.getId(), userDao.findByUsernameAndPassword(userName, password).get().getId());
     }
 
     public void testFindAll() {

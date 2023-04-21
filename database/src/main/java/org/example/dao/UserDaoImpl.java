@@ -36,8 +36,15 @@ public class UserDaoImpl implements Dao<Long, User> {
     private static String FIND_BY_ID_SQL = FIND_ALL_SQL + """
             WHERE id = ?
             """;
-    private static String FIND_BY_USERNAME_SQL = FIND_ALL_SQL + """
+
+    private static String FIND_BY_NAME_EMAIL_PASSWORD_SQL = FIND_ALL_SQL + """
             WHERE username = ?
+            AND email = ?
+            AND phone_number = ?
+            """;
+    private static String FIND_BY_USERNAME_AND_PASSWORD_SQL = FIND_ALL_SQL + """
+            WHERE username = ?
+            AND password = ?
             """;
     private static String UPDATE_BY_ID_SQL = """
             UPDATE users
@@ -105,11 +112,12 @@ public class UserDaoImpl implements Dao<Long, User> {
         }
     }
 
-    public Optional<User> findByUserName(String userName) {
+    public Optional<User> findByUsernameAndPassword(String userName, String password) {
         try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(FIND_BY_USERNAME_SQL)) {
+             var statement = connection.prepareStatement(FIND_BY_USERNAME_AND_PASSWORD_SQL)) {
             User user = null;
             statement.setString(1, userName);
+            statement.setString(2, password);
             var result = statement.executeQuery();
             if (result.next()) {
                 user = buildUser(result);
@@ -168,11 +176,24 @@ public class UserDaoImpl implements Dao<Long, User> {
             statement.executeUpdate();
 
             var generatedKeys = statement.getGeneratedKeys();
-            
+
             if (generatedKeys.next())
                 user.setId(generatedKeys.getLong("id"));
-            
+
             return user;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean checkUnique(String username, String email, String phoneNumber) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_BY_NAME_EMAIL_PASSWORD_SQL)) {
+            statement.setString(1, username);
+            statement.setString(2, email);
+            statement.setString(3, phoneNumber);
+            var result = statement.executeQuery();
+            return !result.next();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

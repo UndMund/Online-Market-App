@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.User;
 
+import java.util.stream.Collectors;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -15,7 +17,7 @@ public class CreateUserDtoMapper implements Mapper<User, UserDtoRequest> {
         return UserDtoRequest.builder()
                 .id(object.getId())
                 .userName(object.getUserName())
-                .positions(object.getPositions())
+                .positions(object.getPositions().stream().map(Enum::name).collect(Collectors.toList()))
                 .email(object.getEmail())
                 .phoneNumber(object.getPhoneNumber())
                 .money(object.getMoney())

@@ -20,7 +20,7 @@ public class CreateUserMapperTest {
         positions.add("ADMIN");
         userDtoResponse = UserDtoResponse.builder()
                 .userName("Oleg")
-                .positions(positions)
+                .position("ADMIN")
                 .email("oleg@mail.ru")
                 .phoneNumber("+274339987654")
                 .password("12345yom")
@@ -35,7 +35,7 @@ public class CreateUserMapperTest {
     public void mapFrom() {
         User user = CreateUserMapper.getInstance().mapFrom(userDtoResponse);
         assertEquals(userDtoResponse.getUserName(), user.getUserName());
-        assertEquals(userDtoResponse.getPositions().get(0), user.getPositions().get(0).toString());
+        assertEquals(userDtoResponse.getPosition(), user.getPositions().get(0).toString());
         assertEquals(userDtoResponse.getEmail(), user.getEmail());
         assertEquals(userDtoResponse.getPhoneNumber(), user.getPhoneNumber());
         assertEquals(userDtoResponse.getPassword(), user.getPassword());

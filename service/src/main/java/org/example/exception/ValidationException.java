@@ -1,6 +1,7 @@
 package org.example.exception;
 
 import lombok.Getter;
+import org.example.validator.Error;
 
 import java.util.List;
 

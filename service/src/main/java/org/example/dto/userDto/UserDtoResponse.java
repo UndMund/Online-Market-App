@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class UserDtoResponse {
     String userName;
-    List<String> positions;
+    String position;
     String email;
     String phoneNumber;
     String password;
