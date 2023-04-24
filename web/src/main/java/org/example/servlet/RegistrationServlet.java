@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.positionDto.PositionDto;
-import org.example.dto.userDto.UserDtoResponse;
+import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.exception.ValidationException;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
@@ -20,22 +20,24 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("positions", PositionDto.values());
-        req.getRequestDispatcher(JspHelper.getPath("registration")).forward(req, resp);
+        req.getRequestDispatcher(JspHelper.getPath("authorization/registration"))
+                .forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var userDto = UserDtoResponse.builder()
+        var userDto = UserDtoRegResponse.builder()
                 .userName(req.getParameter("username"))
-                .position(req.getParameter("role"))
+                .position(req.getParameter("position"))
                 .email(req.getParameter("email"))
                 .phoneNumber(req.getParameter("phoneNumber"))
                 .password(req.getParameter("password"))
                 .build();
 
         try {
-            userService.create(userDto);
-            resp.sendRedirect("/login");
+            var user = userService.create(userDto);
+            req.getSession().setAttribute("user", user);
+            resp.sendRedirect(UrlPath.MAIN);
         } catch (ValidationException exception) {
             req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);

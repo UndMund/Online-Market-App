@@ -134,6 +134,8 @@ public class ProductDaoImpl implements Dao<Long, Product> {
         }
     }
 
+    //find by category
+
     @Override
     public boolean delete(Long id) {
         try (var connection = ConnectionManager.get();

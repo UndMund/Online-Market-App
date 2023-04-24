@@ -1,14 +1,11 @@
 package org.example.service;
 
-import org.example.dao.PositionDao;
 import org.example.dao.UserDaoImpl;
 import org.example.dto.positionDto.PositionDto;
 import org.example.dto.userDto.UserDtoRequest;
-import org.example.dto.userDto.UserDtoResponse;
-import org.example.entity.Position;
+import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.exception.ValidationException;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class UserServiceTest {
     public void create() {
         List<String> positions = new ArrayList<>();
         positions.add("ADMIN");
-        UserDtoResponse newUser = UserDtoResponse.builder()
+        UserDtoRegResponse newUser = UserDtoRegResponse.builder()
                 .userName("Nazar")
                 .email("zavadskiy.nazar@mail.ru")
                 .phoneNumber("+375336328517")

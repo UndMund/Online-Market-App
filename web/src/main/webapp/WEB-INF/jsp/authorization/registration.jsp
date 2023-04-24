@@ -1,12 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.example.utils.UrlPath" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Registration</title>
 </head>
 <body>
 <div align="center">
+    <h1>Register new user</h1>
+    <%@ include file="logRegHeader.jsp"%>
     <form action="${pageContext.request.contextPath}/registration" method="post">
         <label for="username">Name:
             <input type="text" name="username" id="username">
@@ -23,12 +26,10 @@
         <select name="position" id="position">
             <c:forEach var="position" items="${requestScope.positions}">
                 <option label="${position}">${position}</option>
-                <br>
             </c:forEach>
-        </select><br/>
-        <input type="submit" value="Send">
+        </select>
+        <input type="submit" value="Register">
     </form>
-
     <c:if test="${not empty requestScope.errors}">
         <div style="color: red">
             <c:forEach var="error" items="${requestScope.errors}">
@@ -37,6 +38,9 @@
             </c:forEach>
         </div>
     </c:if>
+    <h2>
+        <a href="${pageContext.request.contextPath}<%=UrlPath.MAIN%>">Trading floor</a>
+    </h2>
 </div>
 </body>
 </html>

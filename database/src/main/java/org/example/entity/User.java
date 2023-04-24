@@ -1,9 +1,6 @@
 package org.example.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 @Builder
 public class User {
     private Long id;
-    private String userName;
+    private String username;
     private List<Position> positions;
     private String email;
     private String phoneNumber;

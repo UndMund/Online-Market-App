@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.userDto.UserDtoLoginResponse;
+import jakarta.servlet.http.HttpSession;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.exception.ValidationException;
 import org.example.service.UserService;
@@ -14,26 +14,26 @@ import org.example.utils.UrlPath;
 
 import java.io.IOException;
 
-@WebServlet(UrlPath.LOGIN)
-public class LoginServlet extends HttpServlet {
+@WebServlet(UrlPath.CHANGE_PASSWORD)
+public class ChangePasswordServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(JspHelper.getPath("authorization/login"))
-                .forward(req, resp);
+        req.getRequestDispatcher(JspHelper.getPath("user/changePassword")).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserDtoLoginResponse userDtoLoginResponse = UserDtoLoginResponse.builder()
-                .userName(req.getParameter("username"))
-                .password(req.getParameter("password"))
-                .build();
+        String newPassword = req.getParameter("password");
+        HttpSession session = req.getSession();
+        UserDtoRequest sessionUser = (UserDtoRequest) session.getAttribute("user");
+
         try {
-            UserDtoRequest user = userService.login(userDtoLoginResponse);
-            req.getSession().setAttribute("user", user);
-            resp.sendRedirect(UrlPath.MAIN);
+            userService.updatePassword(sessionUser.getId(), newPassword);
+            req.setAttribute("message", "Password have already changed");
+            doGet(req, resp);
         } catch (ValidationException exception) {
             req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);

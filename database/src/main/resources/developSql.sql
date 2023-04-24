@@ -81,10 +81,10 @@ VALUES (1, 1),
        (3, 2),
        (4, 2);
 
-DROP TABLE category;
 DROP TABLE user_position;
 DROP TABLE position;
 DROP TABLE orders;
 DROP TABLE product;
 DROP TABLE users;
+DROP TABLE category;
 
