@@ -1,22 +1,31 @@
 package org.example.entity;
 
-import java.util.Arrays;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public enum Position {
-    ADMIN(1),
-    USER(2);
-    private final Integer id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-    Position(Integer id) {
-        this.id = id;
-    }
-    public static Optional<Position> find(String role) {
-        return Arrays.stream(values())
-                .filter(it -> it.name().equals(role))
-                .findFirst();
-    }
-    public Integer getId() {
-        return id;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "position")
+public class Position {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(nullable = false, unique = true)
+    private String positionName;
+    @Builder.Default
+    @OneToMany(mappedBy = "position")
+    private List<User> users = new ArrayList<>();
+    public void addUser(User user) {
+        this.users.add(user);
+        user.setPosition(this);
     }
 }

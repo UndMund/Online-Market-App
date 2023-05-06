@@ -7,7 +7,7 @@ import lombok.Value;
 @Builder
 public class UserDtoUpdateUserResponse {
     String id;
-    String userName;
+    String username;
     String position;
     String email;
     String phoneNumber;

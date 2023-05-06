@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class UserDtoRegResponse {
-    String userName;
+    String username;
     String position;
     String email;
     String phoneNumber;

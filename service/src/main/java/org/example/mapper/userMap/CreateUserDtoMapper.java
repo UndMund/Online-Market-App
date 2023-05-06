@@ -1,7 +1,6 @@
 package org.example.mapper.userMap;
 
 import lombok.NoArgsConstructor;
-import org.example.dto.positionDto.PositionDto;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.User;
 import org.example.mapper.Mapper;
@@ -14,18 +13,10 @@ public class CreateUserDtoMapper implements Mapper<User, UserDtoRequest> {
 
     @Override
     public UserDtoRequest mapFrom(User object) {
-        PositionDto positionDto;
-        if (object.getPositions().size() == 2) {
-            positionDto = PositionDto.ADMIN;
-
-        } else {
-            positionDto = PositionDto.USER;
-        }
-
         return UserDtoRequest.builder()
                 .id(object.getId())
                 .username(object.getUsername())
-                .position(positionDto.name())
+                .position(object.getPosition().getPositionName())
                 .email(object.getEmail())
                 .phoneNumber(object.getPhoneNumber())
                 .money(object.getMoney())

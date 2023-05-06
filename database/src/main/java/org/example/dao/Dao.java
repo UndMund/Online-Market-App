@@ -1,16 +1,18 @@
 package org.example.dao;
 
+import org.hibernate.Session;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface Dao <K, E> {
-        boolean updateById(E e);
+        void update(E entity, Session session);
 
-        Optional<E> findById(K id);
+        Optional<E> findById(K id, Session session);
 
-        List<E> findAll();
+        List<E> findAll(Session session);
 
-        boolean delete(K id);
+        void deleteById(K id, Session session);
 
-        E save(E e);
+        K save(E entity, Session session);
 }

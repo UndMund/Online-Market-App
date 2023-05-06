@@ -6,6 +6,6 @@ import lombok.Value;
 @Value
 @Builder
 public class UserDtoLoginResponse {
-    String userName;
+    String username;
     String password;
 }

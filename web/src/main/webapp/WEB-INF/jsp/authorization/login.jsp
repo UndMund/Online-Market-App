@@ -8,7 +8,7 @@
 <body>
 <div align="center">
     <h1>Log In</h1>
-    <%@ include file="logRegHeader.jsp"%>
+    <%@ include file="logRegHeader.jsp" %>
     <form action="${pageContext.request.contextPath}<%=UrlPath.LOGIN%>" method="post">
         <label for="username">Username:
             <input type="text" name="username" id="username">
@@ -17,15 +17,15 @@
             <input type="password" name="password" id="password" required>
         </label><br>
         <button type="submit">Login</button>
-            <c:if test="${not empty requestScope.errors}">
-                <div style="color: red">
-                    <c:forEach var="error" items="${requestScope.errors}">
-                        <span>${error.message}</span>
-                        <br>
-                    </c:forEach>
-                </div>
-            </c:if>
     </form>
+    <c:if test="${not empty requestScope.errors}">
+        <div style="color: red">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+                <br>
+            </c:forEach>
+        </div>
+    </c:if>
     <h2>
         <a href="${pageContext.request.contextPath}<%=UrlPath.MAIN%>">Trading floor</a>
     </h2>

@@ -7,12 +7,11 @@ import org.example.dto.categoryDto.CategoryDto;
 import org.example.mapper.categoryMap.CategoryMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryService {
-    private CategoryDao categoryDao = CategoryDao.getInstance();
-    private CategoryMapper categoryMapper = CategoryMapper.getInstance();
+    private final CategoryDao categoryDao = CategoryDao.getInstance();
+    private final CategoryMapper categoryMapper = CategoryMapper.getInstance();
     private static final CategoryService INSTANCE = new CategoryService();
 
     public static CategoryService getInstance() {
@@ -20,6 +19,6 @@ public class CategoryService {
     }
 
     public List<CategoryDto> getCategories() {
-        return categoryDao.findAll().stream().map(categoryMapper::mapFrom).collect(Collectors.toList());
+        return null;//categoryDao.findAll().stream().map(categoryMapper::mapFrom).collect(Collectors.toList());
     }
 }

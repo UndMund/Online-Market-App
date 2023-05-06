@@ -2,10 +2,10 @@ package org.example.validator.userValidator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dao.UserDaoImpl;
-import org.example.dto.positionDto.PositionDto;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.exception.ValidationException;
+import org.example.service.PositionService;
+import org.example.service.UserService;
 import org.example.validator.Error;
 import org.example.validator.ValidationResult;
 import org.example.validator.Validator;
@@ -18,7 +18,8 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
 
     public static final NewUserValidator INSTANCE = new NewUserValidator();
     private static final UserAttributesValidator userValidator = UserAttributesValidator.getInstance();
-    private static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private static final UserService userService = UserService.getInstance();
+    private static final PositionService positionService = PositionService.getInstance();
 
     public static NewUserValidator getInstance() {
         return INSTANCE;
@@ -30,13 +31,13 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
 
         List<String> invalidDataMessages = new ArrayList<>();
 
-        if (!userDao.isUniqueUsername(object.getUserName())) {
+        if (!userService.isUniqueUsername(object.getUsername())) {
             invalidDataMessages.add("username");
         }
-        if (!userDao.isUniqueEmail(object.getEmail())) {
+        if (!userService.isUniqueEmail(object.getEmail())) {
             invalidDataMessages.add("email");
         }
-        if (!userDao.isUniquePhoneNumber(object.getPhoneNumber())) {
+        if (!userService.isUniquePhoneNumber(object.getPhoneNumber())) {
             invalidDataMessages.add("phone number");
         }
         if (!invalidDataMessages.isEmpty()) {
@@ -49,8 +50,8 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
         }
 
 
-        if (object.getUserName().isEmpty() ||
-            object.getUserName().length() > 32) {
+        if (object.getUsername().isEmpty() ||
+            object.getUsername().length() > 32) {
             validationResult.add(Error.of("invalid.username",
                     "Username is invalid"));
         }
@@ -60,7 +61,7 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
                     "Email is invalid"));
         }
 
-        if (PositionDto.find(object.getPosition()).isEmpty()) {
+        if (positionService.getPosition(object.getPosition()).isEmpty()) {
             validationResult.add(Error.of("invalid.position",
                     "Position is Invalid"));
         }

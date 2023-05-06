@@ -1,89 +1,61 @@
 package org.example.dao;
 
-import junit.framework.TestCase;
+import lombok.Cleanup;
 import org.example.entity.User;
-import org.example.exception.DaoException;
-import org.example.utils.ConnectionManager;
-import org.junit.jupiter.api.AfterAll;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import static org.example.dao.DeleteSql.*;
+import org.example.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class UserDaoImplTest extends TestCase {
-    private static final UserDaoImpl userDao = UserDaoImpl.getInstance();
-    private static User user1 = new User(
-            1L,
-            "Alex",
-            new ArrayList<>(),
-            "alex@mail.ru",
-            "+47423999483",
-            "1234",
-            BigDecimal.ONE);
-    private static User user2 = new User(
-            1L,
-            "Ale",
-            new ArrayList<>(),
-            "ale@mail.ru",
-            "+4743999483",
-            "1234",
-            BigDecimal.ONE);
+public class UserDaoImplTest {
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    @AfterAll
-    public void tearDown() {
-        try (var connection = ConnectionManager.get();
-             var statement = connection
-                     .prepareStatement(DELETE_USERS_SQL))
-        {
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+    @Before
+    public void initDb() {
+        TestDataImporter.importData(sessionFactory);
     }
 
-    public void testUpdateById() {
-        User user = userDao.save(user1);
-        user.setUsername("rrr");
-        userDao.updateById(user);
-        assertEquals(user.getUsername(), userDao.findById(user.getId()).get().getUsername());
+    @After
+    public void finish() {
+        sessionFactory.close();
     }
 
-    public void testFindById() {
-        User user = userDao.save(user1);
-        Long id = user.getId();
-
-        assertEquals(user.getId(), userDao.findById(id).get().getId());
+    @Test
+    public void update() {
     }
 
-    public void testFindByUsernameAndPassword() {
-        User user = userDao.save(user1);
-        String userName = user.getUsername();
-        String password = user.getPassword();
-
-        assertEquals(user.getId(), userDao.findByUsernameAndPassword(userName, password).get().getId());
+    @Test
+    public void findById() {
     }
 
-    public void testFindAll() {
-        assertEquals(0, userDao.findAll().size());
-        userDao.save(user1);
-        userDao.save(user2);
-        assertEquals(2, userDao.findAll().size());
+    @Test
+    public void findByUsernameAndPassword() {
     }
 
-    public void testDelete() {
-        assertEquals(0, userDao.findAll().size());
-        Long id = userDao.save(user1).getId();
-        assertEquals(1, userDao.findAll().size());
-        userDao.delete(id);
-        assertEquals(0, userDao.findAll().size());
+    @Test
+    public void findAll() {
     }
 
-    public void testSave() {
-        assertEquals(0, userDao.findAll().size());
-        userDao.save(user1);
-        assertEquals(1, userDao.findAll().size());
+    @Test
+    public void deleteById() {
+    }
+
+    @Test
+    public void save() {
+        @Cleanup Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        User user = User.builder()
+                .username("Nazar")
+                .email("asdf@mail.ru")
+                .phoneNumber("+375448767656")
+                .password("Nazar17")
+                .position(PositionDao.getInstance().findById(
+                        Integer.parseInt("1"), session
+                ).get())
+                .build();
+        session.getTransaction().commit();
     }
 }

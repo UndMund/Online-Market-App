@@ -3,7 +3,7 @@
 <%@ page import="org.example.utils.UrlPath" %>
 <html>
 <head>
-    <title>User profile</title>
+    <title>User menu</title>
 </head>
 <body>
 <div align="center">

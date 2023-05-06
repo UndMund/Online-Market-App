@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.positionDto.PositionDto;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.exception.ValidationException;
+import org.example.service.PositionService;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
 import org.example.utils.UrlPath;
@@ -17,9 +17,10 @@ import java.io.IOException;
 @WebServlet(UrlPath.REGISTRATION)
 public class RegistrationServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();
+    private final PositionService positionService = PositionService.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("positions", PositionDto.values());
+        req.setAttribute("positions", positionService.getPositions());
         req.getRequestDispatcher(JspHelper.getPath("authorization/registration"))
                 .forward(req, resp);
     }
@@ -27,7 +28,7 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var userDto = UserDtoRegResponse.builder()
-                .userName(req.getParameter("username"))
+                .username(req.getParameter("username"))
                 .position(req.getParameter("position"))
                 .email(req.getParameter("email"))
                 .phoneNumber(req.getParameter("phoneNumber"))

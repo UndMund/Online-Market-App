@@ -14,7 +14,7 @@ public class NewUserValidatorTest {
         List<String> positions = new ArrayList<>();
         positions.add("ADMIN");
         UserDtoRegResponse newUser = UserDtoRegResponse.builder()
-                .userName("Nazar")
+                .username("Nazar")
                 .email("zavadskiy.nazar@mail.ru")
                 .phoneNumber("+375336328517")
                 .position("ADMIN")
