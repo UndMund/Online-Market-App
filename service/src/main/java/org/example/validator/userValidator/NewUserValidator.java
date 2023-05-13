@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.exception.ValidationException;
-import org.example.service.PositionService;
 import org.example.service.UserService;
 import org.example.validator.Error;
 import org.example.validator.ValidationResult;
@@ -19,7 +18,6 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
     public static final NewUserValidator INSTANCE = new NewUserValidator();
     private static final UserAttributesValidator userValidator = UserAttributesValidator.getInstance();
     private static final UserService userService = UserService.getInstance();
-    private static final PositionService positionService = PositionService.getInstance();
 
     public static NewUserValidator getInstance() {
         return INSTANCE;
@@ -61,10 +59,10 @@ public class NewUserValidator implements Validator<UserDtoRegResponse> {
                     "Email is invalid"));
         }
 
-        if (positionService.getPosition(object.getPosition()).isEmpty()) {
+        /*if (positionService.getPosition(object.getPosition()).isEmpty()) {
             validationResult.add(Error.of("invalid.position",
                     "Position is Invalid"));
-        }
+        }*/
 
         if (object.getPhoneNumber().isEmpty() ||
             !userValidator.validatePhoneNumber(object.getPhoneNumber())) {

@@ -2,7 +2,7 @@ package org.example.validator.productValidator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dao.ProductDaoImpl;
+import org.example.dao.ProductRepository;
 import org.example.dto.productDto.ProductDtoResponse;
 import org.example.validator.ValidationResult;
 import org.example.validator.Validator;
@@ -11,7 +11,7 @@ import org.example.validator.Validator;
 public class NewProductValidator implements Validator<ProductDtoResponse> {
     private static final NewProductValidator INSTANCE = new NewProductValidator();
     private static final ProductAttributesValidator productValidator = ProductAttributesValidator.getInstance();
-    private static final ProductDaoImpl productDao = ProductDaoImpl.getInstance();
+    private static final ProductRepository productDao = ProductRepository.getInstance();
 
     public static NewProductValidator getInstance() {
         return INSTANCE;

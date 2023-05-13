@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.dao.UserDaoImpl;
+import org.example.dao.UserRepository;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.junit.After;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserServiceTest {
 
-    private static final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private static final UserRepository userDao = UserRepository.getInstance();
 
     @After
     public void tearDown() throws Exception {

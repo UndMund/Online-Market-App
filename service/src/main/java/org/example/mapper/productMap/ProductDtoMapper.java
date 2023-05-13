@@ -2,7 +2,7 @@ package org.example.mapper.productMap;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dto.categoryDto.CategoryDto;
+import org.example.dto.categoryDto.CategoryDtoResponse;
 import org.example.dto.productDto.ProductDtoResponse;
 import org.example.entity.Product;
 import org.example.entity.User;
@@ -29,7 +29,9 @@ public class ProductDtoMapper implements Mapper<ProductDtoResponse, Product> {
                 .description(object.getDescription())
                 .category(categoryMapper
                         .mapFrom(
-                                CategoryDto.find(object.getCategory()).get()
+                                CategoryDtoResponse.builder()
+                                        .categoryName(object.getCategory())
+                                        .build()
                         ))
                 .user(
                         User.builder()

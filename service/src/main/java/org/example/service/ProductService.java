@@ -2,8 +2,8 @@ package org.example.service;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dao.ProductDaoImpl;
-import org.example.dto.categoryDto.CategoryDto;
+import org.example.dao.ProductRepository;
+import org.example.dto.categoryDto.CategoryDtoResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.productDto.ProductDtoResponse;
 import org.example.dto.statusDto.StatusDto;
@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductService {
     private static final ProductService INSTANCE = new ProductService();
-    private static final ProductDaoImpl productDao = ProductDaoImpl.getInstance();
+    private static final ProductRepository productRep = ProductRepository.getInstance();
     private static final NewProductValidator productValidator = NewProductValidator.getInstance();
     private static final CategoryDtoMapper categoryMap = CategoryDtoMapper.getInstance();
     private static final ProductMapper productMap = ProductMapper.getInstance();
@@ -30,7 +30,7 @@ public class ProductService {
         return INSTANCE;
     }
 
-    public List<ProductDtoRequest> getProductsByCategory(CategoryDto categoryDto) {
+    public List<ProductDtoRequest> getProductsByCategory(CategoryDtoResponse categoryDtoResponse) {
         return null;/*productDao.findByCategoryAndStatus(
                 categoryMap.mapFrom(categoryDto), Status.ON_SALE)
                 .stream()

@@ -26,7 +26,7 @@ public class ProductMapper implements Mapper<Product, ProductDtoRequest> {
                 .price(object.getPrice())
                 .description(object.getDescription())
                 .status(CREATE_STATUS_DTO_MAPPER.mapFrom(object.getStatus()))
-                .category(categoryDtoMapper.mapFrom(object.getCategory()))
+                //.category(categoryDtoMapper.mapFrom(object.getCategory()))
                 .user(userMapper.mapFrom(object.getUser()))
                 .build();
     }

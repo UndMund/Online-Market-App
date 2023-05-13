@@ -3,7 +3,7 @@ package org.example.service;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
-import org.example.dao.UserDaoImpl;
+import org.example.dao.UserRepository;
 import org.example.dto.userDto.UserDtoLoginResponse;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.dto.userDto.UserDtoRequest;
@@ -20,7 +20,7 @@ public class UserService {
     private final NewUserValidator newUserValidator = NewUserValidator.getInstance();
     private final LogInValidator logInValidator = LogInValidator.getInstance();
     private final NewPassValidator newPassValidator = NewPassValidator.getInstance();
-    private final UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private final UserRepository userRep = UserRepository.getInstance();
     private final CreateUserMapper createUserMap = CreateUserMapper.getInstance();
     private final CreateUserDtoMapper createUserDtoMap = CreateUserDtoMapper.getInstance();
     private static UserService INSTANCE;
@@ -40,7 +40,7 @@ public class UserService {
             throw new ValidationException(validationResult.getErrors());
         }
 
-        var user = userDao.findByUsernameAndPassword(
+        var user = userRep.findByUsernameAndPassword(
                                 userDto.getUsername(),
                                 userDto.getPassword(),
                                 session
@@ -63,7 +63,7 @@ public class UserService {
             throw new ValidationException(validationResult.getErrors());
         }
         var userEntity = createUserMap.mapFrom(userDto);
-        userEntity.setId(userDao.save(userEntity, session));
+        userEntity = (userRep.save(userEntity, session));
         //userEntity = Transaction.saveUserAndPositions(userEntity);
         return createUserDtoMap.mapFrom(userEntity);
     }
@@ -82,18 +82,18 @@ public class UserService {
     public boolean isUniqueUsername(String username) {
         @Cleanup var sessionFactory = HibernateUtil.getSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-        return userDao.isUniqueUsername(username, session);
+        return userRep.isUniqueUsername(username, session);
     }
 
     public boolean isUniqueEmail(String email) {
         @Cleanup var sessionFactory = HibernateUtil.getSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-        return userDao.isUniqueEmail(email, session);
+        return userRep.isUniqueEmail(email, session);
     }
 
     public boolean isUniquePhoneNumber(String phoneNumber) {
         @Cleanup var sessionFactory = HibernateUtil.getSessionFactory();
         @Cleanup var session = sessionFactory.openSession();
-        return userDao.isUniquePhoneNumber(phoneNumber, session);
+        return userRep.isUniquePhoneNumber(phoneNumber, session);
     }
 }

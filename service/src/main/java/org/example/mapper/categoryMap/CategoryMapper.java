@@ -2,12 +2,12 @@ package org.example.mapper.categoryMap;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dto.categoryDto.CategoryDto;
+import org.example.dto.categoryDto.CategoryDtoRequest;
 import org.example.entity.Category;
 import org.example.mapper.Mapper;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CategoryMapper implements Mapper<Category, CategoryDto> {
+public class CategoryMapper implements Mapper<Category, CategoryDtoRequest> {
     private static final CategoryMapper INSTANCE = new CategoryMapper();
 
     public static CategoryMapper getInstance() {
@@ -15,7 +15,10 @@ public class CategoryMapper implements Mapper<Category, CategoryDto> {
     }
 
     @Override
-    public CategoryDto mapFrom(Category object) {
-        return null; /*CategoryDto.find(object.getName()).get();*/
+    public CategoryDtoRequest mapFrom(Category object) {
+        return CategoryDtoRequest.builder()
+                .id(object.getId())
+                .categoryName(object.getCategoryName())
+                .build();
     }
 }

@@ -25,7 +25,7 @@
         </label><br/>
         <select name="position" id="position">
             <c:forEach var="position" items="${requestScope.positions}">
-                <option label="${position}">${position}</option>
+                <option label="${position.name}">${position.name}</option>
             </c:forEach>
         </select>
         <input type="submit" value="Register">
