@@ -1,16 +1,12 @@
 package org.example.mapper.userMap;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.User;
 import org.example.mapper.Mapper;
 
-import static lombok.AccessLevel.PRIVATE;
-
-@NoArgsConstructor(access = PRIVATE)
-public class CreateUserDtoMapper implements Mapper<User, UserDtoRequest> {
-    private static final CreateUserDtoMapper INSTANCE = new CreateUserDtoMapper();
-
+@RequiredArgsConstructor
+public class UserMapper implements Mapper<User, UserDtoRequest> {
     @Override
     public UserDtoRequest mapFrom(User object) {
         return UserDtoRequest.builder()
@@ -21,9 +17,5 @@ public class CreateUserDtoMapper implements Mapper<User, UserDtoRequest> {
                 .phoneNumber(object.getPhoneNumber())
                 .money(object.getMoney())
                 .build();
-    }
-
-    public static CreateUserDtoMapper getInstance() {
-        return INSTANCE;
     }
 }

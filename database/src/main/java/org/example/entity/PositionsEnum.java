@@ -18,9 +18,9 @@ public enum PositionsEnum {
         this.name = name;
     }
 
-    public static Optional<PositionsEnum> find(String position) {
+    public static Optional<PositionsEnum> find(String positionName) {
         return Arrays.stream(values())
-                .filter(it -> it.name().equals(position))
+                .filter(it -> it.getName().equals(positionName))
                 .findFirst();
     }
 }

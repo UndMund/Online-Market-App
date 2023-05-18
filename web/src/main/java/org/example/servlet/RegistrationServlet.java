@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.positionDto.Positions;
+import org.example.dto.positionDto.PositionsEnumDto;
 import org.example.dto.userDto.UserDtoRegResponse;
-import org.example.exception.ValidationException;
+import org.example.exception.ServiceException;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
 import org.example.utils.UrlPath;
@@ -19,7 +19,7 @@ public class RegistrationServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("positions", Positions.values());
+        req.setAttribute("positions", PositionsEnumDto.values());
         req.getRequestDispatcher(JspHelper.getPath("authorization/registration"))
                 .forward(req, resp);
     }
@@ -38,7 +38,7 @@ public class RegistrationServlet extends HttpServlet {
             var user = userService.create(userDto);
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(UrlPath.MAIN);
-        } catch (ValidationException exception) {
+        } catch (ServiceException exception) {
             req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);
         }

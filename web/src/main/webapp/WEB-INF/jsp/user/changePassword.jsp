@@ -20,7 +20,7 @@
         <tr>
             <form action="${pageContext.request.contextPath}<%=UrlPath.CHANGE_PASSWORD%>" method="post">
                 <td>
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="password" required>
                 </td>
                 <td>
                     <button type="submit">Update</button>

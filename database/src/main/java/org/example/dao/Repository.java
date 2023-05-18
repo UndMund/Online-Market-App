@@ -1,21 +1,20 @@
 package org.example.dao;
 
 import org.example.entity.BaseEntity;
-import org.hibernate.Session;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 public interface Repository<K extends Serializable, E extends BaseEntity<K>> {
-        E save(E entity, Session session);
-        void delete(K id, Session session);
+        E save(E entity);
+        void delete(K id);
 
-        void update(E entity, Session session);
+        void update(E entity);
 
-        Optional<E> findById(K id, Session session);
+        Optional<E> findById(K id);
 
-        List<E> findAll(Session session);
+        List<E> findAll();
 
 
 }

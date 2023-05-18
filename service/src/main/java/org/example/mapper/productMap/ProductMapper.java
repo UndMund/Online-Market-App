@@ -1,32 +1,26 @@
 package org.example.mapper.productMap;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.entity.Product;
 import org.example.mapper.Mapper;
 import org.example.mapper.categoryMap.CategoryMapper;
 import org.example.mapper.statusMap.StatusMapper;
-import org.example.mapper.userMap.CreateUserDtoMapper;
+import org.example.mapper.userMap.UserMapper;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class ProductMapper implements Mapper<Product, ProductDtoRequest> {
-    private static final ProductMapper INSTANCE = new ProductMapper();
-    private static final CategoryMapper categoryDtoMapper = CategoryMapper.getInstance();
-    private static final CreateUserDtoMapper userMapper = CreateUserDtoMapper.getInstance();
-    private static final StatusMapper CREATE_STATUS_DTO_MAPPER = StatusMapper.getInstance();
-
-    public static ProductMapper getInstance() {
-        return INSTANCE;
-    }
+    private final CategoryMapper categoryMapper;
+    private final StatusMapper statusMapper;
+    private final UserMapper userMapper;
     public ProductDtoRequest mapFrom(Product object) {
         return ProductDtoRequest.builder()
                 .id(object.getId())
                 .name(object.getProductName())
                 .price(object.getPrice())
                 .description(object.getDescription())
-                .status(CREATE_STATUS_DTO_MAPPER.mapFrom(object.getStatus()))
-                //.category(categoryDtoMapper.mapFrom(object.getCategory()))
+                .category(categoryMapper.mapFrom(object.getCategory()))
+                .status(statusMapper.mapFrom(object.getStatus()))
                 .user(userMapper.mapFrom(object.getUser()))
                 .build();
     }

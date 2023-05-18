@@ -2,12 +2,10 @@ package org.example.dao;
 
 import org.example.entity.Order;
 
-public class OrderRepository extends BaseRepository<Long, Order> {
-    private final static OrderRepository INSTANCE = new OrderRepository(Order.class);
-    private final static UserRepository userRep = UserRepository.getInstance();
-    private final static ProductRepository productRep = ProductRepository.getInstance();
+import javax.persistence.EntityManager;
 
-    private OrderRepository(Class<Order> clazz) {
-        super(clazz);
+public class OrderRepository extends BaseRepository<Long, Order> {
+    private OrderRepository(EntityManager entityManager) {
+        super(entityManager, Order.class);
     }
 }

@@ -7,7 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.dto.userDto.UserDtoRequest;
-import org.example.exception.ValidationException;
+import org.example.dto.userDto.UserDtoUpdatePasswordResponse;
+import org.example.exception.ServiceException;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
 import org.example.utils.UrlPath;
@@ -31,10 +32,13 @@ public class ChangePasswordServlet extends HttpServlet {
         UserDtoRequest sessionUser = (UserDtoRequest) session.getAttribute("user");
 
         try {
-            userService.updatePassword(sessionUser.getId(), newPassword);
+            userService.updatePassword(UserDtoUpdatePasswordResponse.builder()
+                    .id(sessionUser.getId())
+                    .password(newPassword)
+                    .build());
             req.setAttribute("message", "Password have already changed");
             doGet(req, resp);
-        } catch (ValidationException exception) {
+        } catch (ServiceException exception) {
             req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);
         }

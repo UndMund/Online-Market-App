@@ -24,7 +24,7 @@ public class AdminFilter implements Filter {
 
     private boolean isUserAdmin(ServletRequest servletRequest) {
         var user = (UserDtoRequest)((HttpServletRequest) servletRequest).getSession().getAttribute("user");
-        return user.getPosition().equals("ADMIN");
+        return user.getPosition().equals("Admin");
     }
 
 }

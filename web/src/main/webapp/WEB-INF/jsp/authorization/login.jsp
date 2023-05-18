@@ -11,7 +11,7 @@
     <%@ include file="logRegHeader.jsp" %>
     <form action="${pageContext.request.contextPath}<%=UrlPath.LOGIN%>" method="post">
         <label for="username">Username:
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" required>
         </label><br>
         <label for="password">Password:
             <input type="password" name="password" id="password" required>

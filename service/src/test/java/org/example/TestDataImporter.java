@@ -1,6 +1,7 @@
-package org.example.dao;
+package org.example;
 
 import lombok.experimental.UtilityClass;
+import org.example.dao.UserRepository;
 import org.example.entity.*;
 import org.example.utils.HibernateUtil;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 public class TestDataImporter {
     public static void importData(SessionFactory sessionFactory) {
         Session session = HibernateUtil.getSession(sessionFactory);
+        UserRepository userRep = new UserRepository(session);
 
         session.beginTransaction();
 
@@ -59,19 +61,19 @@ public class TestDataImporter {
 
 
         Category phone = Category.builder()
-                .categoryName("Телефоны и аксессуары")
+                .categoryName("Phones and accessories")
                 .build();
 
         Category laptop = Category.builder()
-                .categoryName("Ноутбуки и аксессуары")
+                .categoryName("Laptops and accessories")
                 .build();
 
         Category moto = Category.builder()
-                .categoryName("Мототехника")
+                .categoryName("Motorbikes")
                 .build();
 
         Category music = Category.builder()
-                .categoryName("Музыкальные инструменты")
+                .categoryName("Musical instruments")
                 .build();
 
         phone.setId((Integer) session.save(phone));

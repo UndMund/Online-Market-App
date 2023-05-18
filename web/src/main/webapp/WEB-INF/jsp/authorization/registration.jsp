@@ -12,16 +12,16 @@
     <%@ include file="logRegHeader.jsp"%>
     <form action="${pageContext.request.contextPath}/registration" method="post">
         <label for="username">Name:
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" required>
         </label><br/>
         <label for="email">Email:
-            <input type="text" name="email" id="email">
+            <input type="text" name="email" id="email" required>
         </label><br/>
         <label for="phoneNumber">Phone:
-            <input type="text" name="phoneNumber" id="phoneNumber">
+            <input type="text" name="phoneNumber" id="phoneNumber" required>
         </label><br/>
         <label for="password">Password:
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" required>
         </label><br/>
         <select name="position" id="position">
             <c:forEach var="position" items="${requestScope.positions}">

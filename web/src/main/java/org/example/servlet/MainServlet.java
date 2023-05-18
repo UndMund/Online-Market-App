@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.categoryDto.CategoryDtoRequest;
+import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.service.CategoryService;
 import org.example.service.ProductService;
@@ -23,10 +23,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> categories = categoryService.getCategories()
-                .stream()
-                .map(CategoryDtoRequest::getCategoryName)
-                        .toList();
+        List<CategoryDto> categories = categoryService.getCategories();
         req.getSession().setAttribute("categories", categories);
         req.getRequestDispatcher(JspHelper.getPath("mainMenu/main"))
                 .forward(req, resp);
@@ -34,13 +31,21 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String category = (String) req.getParameter("currentCategory");
-        List<ProductDtoRequest> products = null; // = productService.getProductsByCategory(CategoryDtoResponse.find(category).get());
+        String currentCategory = req.getParameter("currentCategory");
+        List<CategoryDto> categories = (List<CategoryDto>) req.getSession().getAttribute("categories");
+
+        List<ProductDtoRequest> products = productService.getProductsByCategory(
+                categories
+                        .stream()
+                        .filter(c -> c.getCategoryName().equals(currentCategory))
+                        .findFirst().get()
+        );
+
         req.getSession().setAttribute(
                 "products",
                 products
         );
-        req.setAttribute("currentCategory", category);
+        req.setAttribute("currentCategory", currentCategory);
         doGet(req, resp);
     }
 }

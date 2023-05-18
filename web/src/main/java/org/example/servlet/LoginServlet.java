@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.userDto.UserDtoLoginResponse;
 import org.example.dto.userDto.UserDtoRequest;
-import org.example.exception.ValidationException;
+import org.example.exception.ServiceException;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
 import org.example.utils.UrlPath;
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             UserDtoRequest user = userService.login(userDtoLoginResponse);
             req.getSession().setAttribute("user", user);
             resp.sendRedirect(UrlPath.MAIN);
-        } catch (ValidationException exception) {
+        } catch (ServiceException exception) {
             req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);
         }

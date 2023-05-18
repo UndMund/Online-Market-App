@@ -1,42 +1,36 @@
 package org.example.mapper.productMap;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.example.dto.categoryDto.CategoryDtoResponse;
-import org.example.dto.productDto.ProductDtoResponse;
+import lombok.RequiredArgsConstructor;
+import org.example.dao.UserRepository;
+import org.example.dto.categoryDto.CategoryDto;
+import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.entity.Product;
-import org.example.entity.User;
 import org.example.mapper.Mapper;
 import org.example.mapper.categoryMap.CategoryDtoMapper;
 
 import java.math.BigDecimal;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProductDtoMapper implements Mapper<ProductDtoResponse, Product> {
-    private static final ProductDtoMapper INSTANCE = new ProductDtoMapper();
-    private static final CategoryDtoMapper categoryMapper = CategoryDtoMapper.getInstance();
-
-    public static ProductDtoMapper getInstance() {
-        return INSTANCE;
-    }
-
+@RequiredArgsConstructor
+public class ProductDtoMapper implements Mapper<ProductDtoCreateResponse, Product> {
+    private final CategoryDtoMapper categoryMapper;
+    private final UserRepository userRepository;
 
     @Override
-    public Product mapFrom(ProductDtoResponse object) {
+    public Product mapFrom(ProductDtoCreateResponse object) {
         return Product.builder()
                 .productName(object.getName())
                 .price(new BigDecimal(object.getPrice()))
                 .description(object.getDescription())
                 .category(categoryMapper
                         .mapFrom(
-                                CategoryDtoResponse.builder()
-                                        .categoryName(object.getCategory())
+                                CategoryDto.builder()
+                                        .id(object.getCategory().getId())
+                                        .categoryName(object.getCategory().getCategoryName())
                                         .build()
                         ))
                 .user(
-                        User.builder()
-                                .id(Long.valueOf(object.getUser().getId()))
-                                .build())
+                        userRepository.findById(object.getUser().id()).get()
+                )
                 .build();
     }
 }

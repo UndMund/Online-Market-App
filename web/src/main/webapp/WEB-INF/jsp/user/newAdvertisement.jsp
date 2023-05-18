@@ -20,17 +20,17 @@
     </table>
     <form action="${pageContext.request.contextPath}${UrlPath.NEW_AD}" method="post">
         <label for="name">Name:
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" required>
         </label></br>
         <label for="price">Cost:
-            <input type="text" name="price" id="price">
+            <input type="text" name="price" id="price" required>
         </label></br>
         <label for="description">Description:
-            <input type="text" name="description" id="description">
+            <input type="text" name="description" id="description" required>
         </label></br>
         <select name="category" id="category">
             <c:forEach var="category" items="${sessionScope.categories}">
-                <option label="${category}">${category}</option>
+                <option label="${category.categoryName}">${category.categoryName}</option>
             </c:forEach>
         </select>
         <input type="submit" value="Create">

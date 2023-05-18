@@ -11,7 +11,7 @@
         <c:if test="${not empty sessionScope.user}">
             <a href="${pageContext.request.contextPath}<%=UrlPath.USER_PROFILE%>">${sessionScope.user.username}</a>
             <label>, $${sessionScope.user.money}</label>
-            <c:if test="${sessionScope.user.position eq 'ADMIN'}">
+            <c:if test="${sessionScope.user.position eq 'Admin'}">
                 </br>
                 <a href="${pageContext.request.contextPath}<%=UrlPath.ADMIN_PROFILE%>">Admin menu</a>
             </c:if>
@@ -27,7 +27,7 @@
             <td>
                 <select name="currentCategory" id="currentCategory">
                     <c:forEach var="category" items="${sessionScope.categories}">
-                        <option label="${category}">${category}</option>
+                        <option label="${category.categoryName}">${category.categoryName}</option>
                     </c:forEach>
                 </select>
             </td>

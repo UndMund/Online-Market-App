@@ -1,28 +1,56 @@
 package org.example.service;
 
-import lombok.AccessLevel;
-import lombok.Cleanup;
-import lombok.NoArgsConstructor;
 import org.example.dao.CategoryRepository;
-import org.example.dto.categoryDto.CategoryDtoRequest;
+import org.example.dto.categoryDto.CategoryDto;
+import org.example.exception.DaoException;
+import org.example.exception.ServiceException;
 import org.example.mapper.categoryMap.CategoryMapper;
 import org.example.utils.HibernateUtil;
+import org.example.validator.Error;
+import org.example.validator.ValidationResult;
+import org.hibernate.Session;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryService {
-    private final CategoryRepository categoryRep = CategoryRepository.getInstance();
-    private final CategoryMapper categoryMapper = CategoryMapper.getInstance();
+    private final Validator validator;
+    private final Session session;
+    private CategoryRepository categoryRep;
     private static final CategoryService INSTANCE = new CategoryService();
+
+    private CategoryService() {
+        session = HibernateUtil.getSession(HibernateUtil.getSessionFactory());
+        var validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.usingContext().getValidator();
+    }
+
     public static CategoryService getInstance() {
         return INSTANCE;
     }
 
-    public List<CategoryDtoRequest> getCategories() {
-        @Cleanup var sessionFactory = HibernateUtil.getSessionFactory();
-        @Cleanup var session = sessionFactory.openSession();
+    public List<CategoryDto> getCategories() {
+        try {
+            session.beginTransaction();
 
-        return categoryRep.findAll(session).stream().map(categoryMapper::mapFrom).toList();
+            var categoryRep = new CategoryRepository(session);
+            var categoryMap = new CategoryMapper();
+
+            List<CategoryDto> result =
+                    categoryRep.findAll()
+                            .stream()
+                            .map(categoryMap::mapFrom)
+                            .toList();
+
+            session.getTransaction().commit();
+
+            return result;
+        } catch (DaoException e) {
+            var validationResult = new ValidationResult<>();
+            validationResult.add(Error.of("Server error, please try again later"));
+            session.getTransaction().rollback();
+            throw new ServiceException(validationResult.getErrors());
+        }
     }
 }

@@ -2,7 +2,7 @@ package org.example.dto.productDto;
 
 import lombok.Builder;
 import lombok.Value;
-import org.example.dto.categoryDto.CategoryDtoResponse;
+import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.statusDto.StatusDto;
 import org.example.dto.userDto.UserDtoRequest;
 
@@ -16,6 +16,6 @@ public class ProductDtoRequest {
     BigDecimal price;
     String description;
     StatusDto status;
-    CategoryDtoResponse category;
+    CategoryDto category;
     UserDtoRequest user;
 }

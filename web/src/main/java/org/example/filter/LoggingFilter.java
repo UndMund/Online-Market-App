@@ -14,6 +14,5 @@ public class LoggingFilter implements Filter {
                 (k, v) -> System.out.println(k + " : " + Arrays.toString(v))
         );
         filterChain.doFilter(servletRequest, servletResponse);
-
     }
 }

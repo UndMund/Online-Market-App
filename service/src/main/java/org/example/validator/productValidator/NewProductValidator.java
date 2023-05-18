@@ -2,23 +2,20 @@ package org.example.validator.productValidator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.example.dao.ProductRepository;
-import org.example.dto.productDto.ProductDtoResponse;
+import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.validator.ValidationResult;
 import org.example.validator.Validator;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class NewProductValidator implements Validator<ProductDtoResponse> {
+public class NewProductValidator implements Validator<ProductDtoCreateResponse> {
     private static final NewProductValidator INSTANCE = new NewProductValidator();
     private static final ProductAttributesValidator productValidator = ProductAttributesValidator.getInstance();
-    private static final ProductRepository productDao = ProductRepository.getInstance();
-
     public static NewProductValidator getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public ValidationResult isValid(ProductDtoResponse object) {
+    public ValidationResult isValid(ProductDtoCreateResponse object) {
         var validationResult = new ValidationResult();
 
         /*if (productDao.findByNameAndUser(object.getName(),
