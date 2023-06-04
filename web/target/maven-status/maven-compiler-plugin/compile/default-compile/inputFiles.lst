@@ -1,0 +1,14 @@
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/LoginServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/AdminProfileServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/LogoutServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/NewAdvertiseServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/utils/UrlPath.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/utils/JspHelper.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/ChangePasswordServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/AboutServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/filter/AdminFilter.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/UserProfileServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/filter/AuthorizationFilter.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/filter/LoggingFilter.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/RegistrationServlet.java
+/Users/nazar/IdeaProjects/Market/web/src/main/java/org/example/servlet/MainServlet.java
