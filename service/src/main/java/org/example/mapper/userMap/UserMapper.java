@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.User;
 import org.example.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class UserMapper implements Mapper<User, UserDtoRequest> {
     @Override
     public UserDtoRequest mapFrom(User object) {

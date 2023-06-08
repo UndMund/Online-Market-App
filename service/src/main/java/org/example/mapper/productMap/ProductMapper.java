@@ -7,8 +7,10 @@ import org.example.mapper.Mapper;
 import org.example.mapper.categoryMap.CategoryMapper;
 import org.example.mapper.statusMap.StatusMapper;
 import org.example.mapper.userMap.UserMapper;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class ProductMapper implements Mapper<Product, ProductDtoRequest> {
     private final CategoryMapper categoryMapper;
     private final StatusMapper statusMapper;

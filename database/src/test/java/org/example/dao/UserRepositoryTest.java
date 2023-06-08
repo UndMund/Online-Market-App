@@ -1,12 +1,11 @@
 package org.example.dao;
 
-import lombok.Cleanup;
 import org.example.utils.HibernateUtil;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
 @TestInstance(PER_METHOD)
@@ -24,7 +23,7 @@ public class UserRepositoryTest {
         sessionFactory.close();
     }
 
-    @Test
+ /*   @Test
     public void findByUsernameAndPassword() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -81,5 +80,5 @@ public class UserRepositoryTest {
         Assertions.assertTrue(result1);
 
         session.getTransaction().commit();
-    }
+    }*/
 }

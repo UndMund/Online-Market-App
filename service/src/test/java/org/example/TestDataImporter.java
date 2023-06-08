@@ -1,19 +1,13 @@
 package org.example;
 
 import lombok.experimental.UtilityClass;
-import org.example.dao.UserRepository;
-import org.example.entity.*;
-import org.example.utils.HibernateUtil;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.math.BigDecimal;
 
 @UtilityClass
 public class TestDataImporter {
     public static void importData(SessionFactory sessionFactory) {
-        Session session = HibernateUtil.getSession(sessionFactory);
-        UserRepository userRep = new UserRepository(session);
+        /*Session session = HibernateUtil.getSession(sessionFactory);
+        UserRepository userRep =new UserRepository(session);
 
         session.beginTransaction();
 
@@ -122,6 +116,6 @@ public class TestDataImporter {
         hondaCRF.setId((Long) session.save(hondaCRF));
         crafterDE.setId((Long) session.save(crafterDE));
 
-        session.getTransaction().commit();
+        session.getTransaction().commit();*/
     }
 }

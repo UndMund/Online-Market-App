@@ -1,13 +1,17 @@
 package org.example.validator.productValidator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.service.ProductService;
+import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
+@Component
+@RequiredArgsConstructor
 public class ProductUniqueValidator implements ConstraintValidator<ProductUnique, ProductDtoCreateResponse> {
-private static final ProductService productService = ProductService.getInstance();
+private final ProductService productService;
     @Override
     public boolean isValid(ProductDtoCreateResponse productDtoCreateResponse, ConstraintValidatorContext constraintValidatorContext) {
         return productService.isUniqueProduct(productDtoCreateResponse);

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.userDto.UserDtoCreateProductResponse;
@@ -19,8 +20,9 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(UrlPath.NEW_AD)
+@RequiredArgsConstructor
 public class NewAdvertiseServlet extends HttpServlet {
-    private final ProductService productService = ProductService.getInstance();
+    private final ProductService productService;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(JspHelper.getPath("user/newAdvertisement")).forward(req, resp);

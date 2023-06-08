@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoLoginResponse;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.exception.ServiceException;
@@ -15,8 +16,9 @@ import org.example.utils.UrlPath;
 import java.io.IOException;
 
 @WebServlet(UrlPath.LOGIN)
+@RequiredArgsConstructor
 public class LoginServlet extends HttpServlet {
-    private final UserService userService = UserService.getInstance();
+    private final UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

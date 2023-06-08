@@ -1,9 +1,9 @@
 package org.example.dto.userDto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Value;
 
-import javax.validation.constraints.Pattern;
 
 @Value
 @Builder

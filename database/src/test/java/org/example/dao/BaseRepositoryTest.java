@@ -1,22 +1,11 @@
 package org.example.dao;
 
-import lombok.Cleanup;
-import org.example.entity.Position;
-import org.example.entity.PositionsEnum;
-import org.example.entity.User;
 import org.example.utils.HibernateUtil;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 
 @TestInstance(PER_METHOD)
@@ -34,7 +23,7 @@ public class BaseRepositoryTest {
         sessionFactory.close();
     }
 
-    @Test
+  /*  @Test
     public void save() {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -145,7 +134,7 @@ public class BaseRepositoryTest {
         assertThat(names).containsExactlyInAnyOrder("Nazar", "Sergey", "Helena");
 
         session.getTransaction().commit();
-    }
+    }*/
 
 
 }

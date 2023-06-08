@@ -6,9 +6,9 @@ import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.userDto.UserDtoCreateProductResponse;
 import org.example.validator.productValidator.ProductUnique;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Size;
 
 @Value
 @Builder

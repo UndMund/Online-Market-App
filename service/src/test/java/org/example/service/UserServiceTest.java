@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,11 +21,15 @@ public class UserServiceTest {
     private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private UserService userService;
 
+    public static void main(String[] args) {
+
+    }
+
     @BeforeAll
     public void setUp() throws Exception {
         TestDataImporter.importData(sessionFactory);
         System.err.println("IMPORT!!!");
-        userService = UserService.getInstance();
+//        userService = UserService.getInstance();
     }
 
     @AfterAll

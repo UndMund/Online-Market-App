@@ -6,8 +6,10 @@ import org.example.entity.Position;
 import org.example.entity.PositionsEnum;
 import org.example.entity.User;
 import org.example.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class UserDtoMapper implements Mapper<UserDtoRegResponse, User> {
 
     @Override

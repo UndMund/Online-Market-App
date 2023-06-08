@@ -1,11 +1,8 @@
 package org.example.dao;
 
 import org.example.entity.Order;
-
-import javax.persistence.EntityManager;
-
-public class OrderRepository extends BaseRepository<Long, Order> {
-    private OrderRepository(EntityManager entityManager) {
-        super(entityManager, Order.class);
-    }
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

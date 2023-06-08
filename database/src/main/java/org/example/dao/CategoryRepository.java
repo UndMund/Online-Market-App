@@ -1,11 +1,12 @@
 package org.example.dao;
 
 import org.example.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
-public class CategoryRepository extends BaseRepository<Integer, Category> {
-    public CategoryRepository(EntityManager entityManager) {
-        super(entityManager, Category.class);
-    }
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
+    List<Category> findAll();
 }

@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.service.CategoryService;
@@ -16,10 +18,13 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(UrlPath.MAIN)
+@ToString
+@RequiredArgsConstructor
 public class MainServlet extends HttpServlet {
-    private final CategoryService categoryService = CategoryService.getInstance();
-    private final ProductService productService = ProductService.getInstance();
 
+    private CategoryService categoryService;
+
+    private ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

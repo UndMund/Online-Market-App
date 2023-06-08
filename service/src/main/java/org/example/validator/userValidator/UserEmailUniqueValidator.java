@@ -1,12 +1,16 @@
 package org.example.validator.userValidator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.example.service.UserService;
+import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
+@Component
+@RequiredArgsConstructor
 public class UserEmailUniqueValidator implements ConstraintValidator<UserEmailUnique, String> {
-private static final UserService userService = UserService.getInstance();
+private final UserService userService;
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         return userService.isUniqueUserEmail(s);

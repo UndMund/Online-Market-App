@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.dto.userDto.UserDtoUpdatePasswordResponse;
 import org.example.exception.ServiceException;
@@ -16,8 +17,9 @@ import org.example.utils.UrlPath;
 import java.io.IOException;
 
 @WebServlet(UrlPath.CHANGE_PASSWORD)
+@RequiredArgsConstructor
 public class ChangePasswordServlet extends HttpServlet {
-    private final UserService userService = UserService.getInstance();
+    private final UserService userService;
 
 
     @Override

@@ -7,10 +7,12 @@ import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.entity.Product;
 import org.example.mapper.Mapper;
 import org.example.mapper.categoryMap.CategoryDtoMapper;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @RequiredArgsConstructor
+@Component
 public class ProductDtoMapper implements Mapper<ProductDtoCreateResponse, Product> {
     private final CategoryDtoMapper categoryMapper;
     private final UserRepository userRepository;

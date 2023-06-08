@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.statusDto.StatusDto;
 import org.example.entity.Status;
 import org.example.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class StatusDtoMapper implements Mapper<StatusDto, Status> {
     @Override
     public Status mapFrom(StatusDto object) {
