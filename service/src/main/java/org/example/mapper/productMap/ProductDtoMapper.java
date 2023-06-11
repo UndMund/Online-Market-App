@@ -1,7 +1,7 @@
 package org.example.mapper.productMap;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dao.UserRepository;
+import org.example.repository.UserRepository;
 import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.entity.Product;

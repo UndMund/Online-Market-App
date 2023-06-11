@@ -1,7 +1,7 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dao.UserRepository;
+import org.example.repository.UserRepository;
 import org.example.dto.userDto.UserDtoLoginResponse;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.dto.userDto.UserDtoRequest;

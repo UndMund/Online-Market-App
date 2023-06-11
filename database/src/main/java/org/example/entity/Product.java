@@ -1,14 +1,13 @@
 package org.example.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 @Data
 @EqualsAndHashCode(of = {"productName", "user"})
 @ToString(exclude = {"orders"})

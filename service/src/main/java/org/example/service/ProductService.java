@@ -3,7 +3,6 @@ package org.example.service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
-import org.example.dao.ProductRepository;
 import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
@@ -17,12 +16,17 @@ import org.example.mapper.productMap.ProductDtoMapper;
 import org.example.mapper.productMap.ProductMapper;
 import org.example.mapper.statusMap.StatusMapper;
 import org.example.mapper.userMap.UserMapper;
+import org.example.repository.ProductRepository;
 import org.example.validator.Error;
 import org.example.validator.ValidationResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -34,6 +38,13 @@ public class ProductService {
     private final UserMapper userMapper;
     private final ProductMapper productMapper;
     private final ProductDtoMapper productDtoMapper;
+
+    public Slice<ProductDtoRequest> getSliceByCategory(Pageable pageable, CategoryDto categoryDto) {
+        return productRepository.findAllByCategory(
+                categoryDtoMapper.mapFrom(categoryDto),
+                pageable
+        ).map(productMapper::mapFrom);
+    }
 
     public List<ProductDtoRequest> getProductsByCategory(CategoryDto categoryDto) {
         try {
@@ -61,9 +72,9 @@ public class ProductService {
 
             List<ProductDtoRequest> result =
                     productRepository.findAllByStatus(Status.ON_SALE)
-                    .stream()
-                    .map(productMapper::mapFrom)
-                    .toList();
+                            .stream()
+                            .map(productMapper::mapFrom)
+                            .toList();
 
 
             return result;
@@ -75,6 +86,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public void createProduct(ProductDtoCreateResponse productDto) {
         ValidationResult<ProductDtoCreateResponse> validationResult = new ValidationResult<>();
         try {
