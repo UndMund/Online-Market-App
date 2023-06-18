@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+<div align="center">
+    <header>
+        <h1>Log In</h1>
+    </header>
+
+    <table>
+        <tr>
+            <td><a th:href="@{/login}">Login</a></td>
+            <td>
+                <pre>   </pre>
+            </td>
+            <td><a th:href="@{/registration}">Registration</a></td>
+        </tr>
+    </table>
+
+    <form th:action="@{/login}" method="post" th:object="${userLog}">
+        <label for="username">Username:
+            <input type="text" name="username" id="username" required th:value="*{username}">
+        </label><br>
+        <label for="password">Password:
+            <input type="password" name="password" id="password" required th:value="*{password}">
+        </label><br>
+        <button type="submit">Login</button>
+    </form>
+    <!--<th:if test="${er}">
+        <div style="color: red">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+                <br>
+            </c:forEach>
+        </div>
+    </th:if>-->
+    <h2>
+        <a th:href="@{/}">Trading floor</a>
+    </h2>
+</div>
+</body>
+</html>

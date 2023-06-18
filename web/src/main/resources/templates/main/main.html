@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html>
+<head>
+    <title>Main</title>
+</head>
+<body>
+<h2>
+<!--    <%@ include file="mainHeader.html" %>-->
+</h2>
+<div align="center">
+    <h2 th:if="${currentCategory}">Category</h2>
+    <table border="1">
+        <div th:each="product : ${products}">
+        <tr>
+            <th>Name</th>
+            <th>Cost ($)</th>
+            <th>Description</th>
+            <th>Trader name</th>
+            <th>Trader phone number</th>
+        </tr>
+        <tr>
+            <td th:text="${product.name}">Name</td>
+            <td th:text="${product.price}">Price</td>
+            <td th:text="${product.description}">Description</td>
+            <td th:text="${product.user.username}">User username</td>
+            <td th:text="${product.user.phoneNumber}">User phoneNumber</td>
+        </tr>
+        </div>
+    </table>
+</div>
+</body>
+</html>

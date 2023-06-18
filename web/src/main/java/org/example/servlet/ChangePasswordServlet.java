@@ -1,7 +1,6 @@
 package org.example.servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,11 +11,10 @@ import org.example.dto.userDto.UserDtoUpdatePasswordResponse;
 import org.example.exception.ServiceException;
 import org.example.service.UserService;
 import org.example.utils.JspHelper;
-import org.example.utils.UrlPath;
 
 import java.io.IOException;
 
-@WebServlet(UrlPath.CHANGE_PASSWORD)
+//@WebServlet(UrlPath.CHANGE_PASSWORD)
 @RequiredArgsConstructor
 public class ChangePasswordServlet extends HttpServlet {
     private final UserService userService;

@@ -1,11 +1,12 @@
 package org.example.validator.userValidator;
 
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.example.service.UserService;
 import org.springframework.stereotype.Component;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 @Component
 @RequiredArgsConstructor
 public class UserNameUniqueValidator implements ConstraintValidator<UserNameUnique, String> {

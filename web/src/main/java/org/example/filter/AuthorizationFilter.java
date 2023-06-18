@@ -2,7 +2,6 @@ package org.example.filter;
 
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.utils.UrlPath;
@@ -10,7 +9,7 @@ import org.example.utils.UrlPath;
 import java.io.IOException;
 import java.util.Set;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class AuthorizationFilter implements Filter {
     private static final Set<String> PUBLIC_PATH = Set.of(UrlPath.LOGIN, UrlPath.REGISTRATION, UrlPath.MAIN);
 

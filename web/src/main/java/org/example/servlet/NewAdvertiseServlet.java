@@ -1,7 +1,6 @@
 package org.example.servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,12 +13,11 @@ import org.example.dto.userDto.UserDtoRequest;
 import org.example.exception.ServiceException;
 import org.example.service.ProductService;
 import org.example.utils.JspHelper;
-import org.example.utils.UrlPath;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(UrlPath.NEW_AD)
+//@WebServlet(UrlPath.NEW_AD)
 @RequiredArgsConstructor
 public class NewAdvertiseServlet extends HttpServlet {
     private final ProductService productService;

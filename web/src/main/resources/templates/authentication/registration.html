@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<div align="center">
+    <header>
+        <h1>Register new user</h1>
+    </header>
+
+    <table>
+        <tr>
+            <td><a th:href="@{/login}">Login</a></td>
+            <td>
+                <pre>   </pre>
+            </td>
+            <td><a th:href="@{/registration}">Registration</a></td>
+        </tr>
+    </table>
+
+    <form th:action="@{/registration}" method="post" th:value="${userReg}">
+        <label for="username">Name:
+            <input type="text" name="username" id="username" required th:value="*{username}">
+        </label><br/>
+        <label for="email">Email:
+            <input type="text" name="email" id="email" required th:value="*{email}">
+        </label><br/>
+        <label for="phoneNumber">Phone:
+            <input type="text" name="phoneNumber" id="phoneNumber" required th:value="*{phoneNumber}">
+        </label><br/>
+        <label for="password">Password:
+            <input type="password" name="password" id="password" required th:value="*{password}">
+        </label><br/>
+        <select name="position" id="position" th:checked="${position == userReg.position}">
+            <div th:each="position : ${positions}">
+                <option th:label="${position.name}">Position name</option>
+            </div>
+        </select>
+        <input type="submit" value="Register">
+    </form>
+
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
+
+    <h2>
+        <a th:href="@{/}">Trading floor</a>
+    </h2>
+</div>
+</body>
+</html>

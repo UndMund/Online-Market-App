@@ -1,7 +1,6 @@
 package org.example.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.userDto.UserDtoRequest;
@@ -9,7 +8,7 @@ import org.example.utils.UrlPath;
 
 import java.io.IOException;
 
-@WebFilter(UrlPath.ADMIN_PROFILE + "*")
+//@WebFilter(UrlPath.ADMIN_PROFILE + "*")
 public class AdminFilter implements Filter {
 
     @Override

@@ -1,40 +1,34 @@
-package org.example.servlet;
+package org.example.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoRequest;
+import org.example.dto.statusDto.StatusDto;
 import org.example.service.CategoryService;
 import org.example.service.ProductService;
-import org.example.utils.JspHelper;
-import org.example.utils.UrlPath;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.IOException;
 import java.util.List;
-
-@WebServlet(UrlPath.MAIN)
-@ToString
+@Controller
 @RequiredArgsConstructor
-public class MainServlet extends HttpServlet {
+public class MainPageController {
+    private final CategoryService categoryService;
+    private final ProductService productService;
 
-    private CategoryService categoryService;
-
-    private ProductService productService;
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @GetMapping("/main")
+    public String mainPage(Model model) {
         List<CategoryDto> categories = categoryService.getCategories();
-        req.getSession().setAttribute("categories", categories);
-        req.getRequestDispatcher(JspHelper.getPath("mainMenu/main"))
-                .forward(req, resp);
+        List<ProductDtoRequest> products = productService.getProductsByStatus(StatusDto.ON_SALE);
+        model.addAttribute("categories", categories);
+        model.addAttribute("products", products);
+        return "main/main";
     }
 
-    @Override
+    //ProductsCategory controller maybe и в нем обработка категорий и передача уже сюда в get прием продуктов из модели
+
+    /*@Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String currentCategory = req.getParameter("currentCategory");
         List<CategoryDto> categories = (List<CategoryDto>) req.getSession().getAttribute("categories");
@@ -52,5 +46,5 @@ public class MainServlet extends HttpServlet {
         );
         req.setAttribute("currentCategory", currentCategory);
         doGet(req, resp);
-    }
+    }*/
 }

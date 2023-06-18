@@ -2,7 +2,7 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.repository.UserRepository;
-import org.example.dto.userDto.UserDtoLoginResponse;
+import org.example.dto.userDto.UserDtoLogResponse;
 import org.example.dto.userDto.UserDtoRegResponse;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.dto.userDto.UserDtoUpdatePasswordResponse;
@@ -27,11 +27,11 @@ public class UserService {
     private final UserDtoMapper userDtoMapper;
 
 
-    public UserDtoRequest login(UserDtoLoginResponse userDto) throws ServiceException {
-        ValidationResult<UserDtoLoginResponse> validationResult = new ValidationResult<>();
+    public UserDtoRequest login(UserDtoLogResponse userDto) throws ServiceException {
+        ValidationResult<UserDtoLogResponse> validationResult = new ValidationResult<>();
         try {
 
-            Set<ConstraintViolation<UserDtoLoginResponse>> validates = validator.validate(userDto);
+            Set<ConstraintViolation<UserDtoLogResponse>> validates = validator.validate(userDto);
             if (!validates.isEmpty()) {
                 validationResult.setValidationErrors(validates);
                 throw new ServiceException(validationResult.getErrors());
