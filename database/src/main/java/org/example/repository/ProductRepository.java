@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -17,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByStatus(Status status);
 
-    Optional<Product> findByProductNameAndUserId(String productName, Long userId);
+    boolean findByProductNameAndUserId(String productName, Long userId);
 
     Slice<Product> findAllByCategory(Category category, Pageable pageable);
 }

@@ -53,7 +53,6 @@ public class NewAdvertiseServlet extends HttpServlet {
             req.setAttribute("message", "Ad has already created. Wait for verification, please");
             doGet(req, resp);
         } catch (ServiceException exception) {
-            req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);
         }
     }

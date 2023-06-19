@@ -39,7 +39,6 @@ public class ChangePasswordServlet extends HttpServlet {
             req.setAttribute("message", "Password have already changed");
             doGet(req, resp);
         } catch (ServiceException exception) {
-            req.setAttribute("errors", exception.getErrors());
             doGet(req, resp);
         }
     }

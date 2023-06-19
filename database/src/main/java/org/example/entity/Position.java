@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "position")
-public class Position implements BaseEntity<Integer> {
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

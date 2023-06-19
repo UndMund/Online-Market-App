@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
-public class User implements BaseEntity<Long> {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +27,7 @@ public class User implements BaseEntity<Long> {
     private String phoneNumber;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "NUMERIC DEFAULT 0")
     private BigDecimal money;
     @ManyToOne
     @JoinColumn(name = "position_id", referencedColumnName = "id", nullable = false)

@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "category")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Category implements BaseEntity<Integer> {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

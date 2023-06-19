@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "product",
         uniqueConstraints = @UniqueConstraint(columnNames = {"productName", "user_id"}))
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Product implements BaseEntity<Long> {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

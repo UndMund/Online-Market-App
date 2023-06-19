@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.positionDto.PositionsEnumDto;
 import org.example.dto.userDto.UserDtoLogResponse;
 import org.example.dto.userDto.UserDtoRegResponse;
+import org.example.service.PositionService;
 import org.example.service.UserService;
 import org.example.utils.UrlPath;
 import org.springframework.stereotype.Controller;
@@ -21,6 +21,7 @@ public class AuthorizationController {
     //redirect fields
     //ошибка при повторной регистрации
     private final UserService userService;
+    private final PositionService positionService;
 
     @GetMapping(UrlPath.LOGIN)
     public String loginPage(Model model,
@@ -41,7 +42,7 @@ public class AuthorizationController {
     public String registrationPage(Model model,
                                    @ModelAttribute UserDtoRegResponse userReg) {
         model.addAttribute("userReg", userReg);
-        model.addAttribute("positions", PositionsEnumDto.values());
+        model.addAttribute("positions", positionService.findAll());
         return "authentication/registration";
     }
 

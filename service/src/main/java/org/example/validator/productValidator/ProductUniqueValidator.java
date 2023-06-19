@@ -4,16 +4,19 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.productDto.ProductDtoCreateResponse;
-import org.example.service.ProductService;
+import org.example.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 
 
 @Component
 @RequiredArgsConstructor
 public class ProductUniqueValidator implements ConstraintValidator<ProductUnique, ProductDtoCreateResponse> {
-private final ProductService productService;
+private final ProductRepository productRepository;
     @Override
     public boolean isValid(ProductDtoCreateResponse productDtoCreateResponse, ConstraintValidatorContext constraintValidatorContext) {
-        return productService.isUniqueProduct(productDtoCreateResponse);
+        return !productRepository.findByProductNameAndUserId(
+                productDtoCreateResponse.getName(),
+                productDtoCreateResponse.getUser().id()
+        );
     }
 }
