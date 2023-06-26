@@ -7,12 +7,41 @@
 </head>
 <body>
 <h2>
-<!--    <%@ include file="mainHeader.html" %>-->
+    <table>
+        <tr>
+            <div th:if="${session.sessionUser eq null}">
+                <a th:href="@{/login}">Login</a>
+            </div>
+            <div th:if="${session.sessionUser ne null}">
+                <a th:href="@{/user_menu}" th:text="${session.sessionUser.username}">Username</a>
+                <label th:text="|, ${session.sessionUser.money}$|"></label>
+                <div th:if="${session.sessionUser.position eq 'Admin'}">
+                    <a th:href="@{/admin_menu}">Admin menu</a>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </tr>
+        <tr>
+            <form th:action="@{/}" method="post">
+                <td>
+                    <select name="currentCategory" id="currentCategory" required>
+                        <div th:each="category : ${session.categories}">
+                            <option th:selected="${currentCategory}" th:text="*{categoryName}">Category name</option>
+                        </div>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit">Use filter</button>
+                </td>
+            </form>
+        </tr>
+    </table>
 </h2>
 <div align="center">
     <h2 th:if="${currentCategory}">Category</h2>
     <table border="1">
-        <div th:each="product : ${products}">
         <tr>
             <th>Name</th>
             <th>Cost ($)</th>
@@ -20,13 +49,21 @@
             <th>Trader name</th>
             <th>Trader phone number</th>
         </tr>
-        <tr>
-            <td th:text="${product.name}">Name</td>
-            <td th:text="${product.price}">Price</td>
-            <td th:text="${product.description}">Description</td>
-            <td th:text="${product.user.username}">User username</td>
-            <td th:text="${product.user.phoneNumber}">User phoneNumber</td>
-        </tr>
+        <div th:each="product : ${products}">
+            <tr>
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.price}">Price</td>
+                <td th:text="${product.description}">Description</td>
+                <td th:text="${product.user.username}">User username</td>
+                <td th:text="${product.user.phoneNumber}">User phoneNumber</td>
+                <div th:if="${(session.sessionUser ne null) and (product.user ne session.sessionUser)}">
+                    <form th:action="@{'/advertise/buy' + ${product.id}}" method="get">
+                        <td>
+                            <input type="submit" value="Buy">
+                        </td>
+                    </form>
+                </div>
+            </tr>
         </div>
     </table>
 </div>

@@ -3,16 +3,14 @@ package org.example.validator.userValidator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.example.repository.UserRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Component
-@RequiredArgsConstructor
 public class UserNameUniqueValidator implements ConstraintValidator<UserNameUnique, String> {
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !userRepository.findByUsername(s);
+        return userRepository.findByUsername(s).isEmpty();
     }
 }

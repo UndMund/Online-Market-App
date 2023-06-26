@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>New advertisement</title>
+</head>
+<body>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <a th:href="@{/user_menu}">Return</a>
+            </td>
+            <td>
+                <h1>Add new advertisement</h1>
+            </td>
+        </tr>
+    </table>
+    <form th:action="@{/user_menu/add_advertisement}" method="post" th:object="${newProduct}">
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name" required th:value="*{name}">
+        </br>
+
+        <label for="price">Cost: </label>
+        <input type="text" name="price" id="price" required th:value="*{price}">
+        </br>
+
+        <label for="description">Description: </label>
+        <input type="text" name="description" id="description" required th:value="*{description}">
+        </br>
+
+        <select name="category" id="category" required>
+            <option th:each="category : ${session.categories}"
+                    th:text="${category}"
+                    th:value="${category}"
+                    th:selected="${newProduct.category eq category}">Category
+            </option>
+        </select><br/>
+
+        <input type="hidden" id="userId" name="userId" th:value="${session.sessionUser.id}">
+
+        <input type="submit" value="Create">
+    </form>
+
+    <div style="color: red" th:if="${errors}">
+        <h4 th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</h4>
+    </div>
+
+    <div style="color: green" th:if="${message}">
+        <h4 th:text="${message}">Message</h4>
+    </div>
+
+</div>
+</body>
+</html>

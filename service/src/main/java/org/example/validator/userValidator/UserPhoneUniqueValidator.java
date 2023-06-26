@@ -2,15 +2,15 @@ package org.example.validator.userValidator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.example.repository.UserRepository;
-import org.springframework.stereotype.Component;
-@Component
-@RequiredArgsConstructor
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class UserPhoneUniqueValidator implements ConstraintValidator<UserPhoneUnique, String> {
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !userRepository.findByPhoneNumber(s);
+        return userRepository.findByPhoneNumber(s).isEmpty();
     }
 }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
-<html>
 <head>
     <title>Login</title>
 </head>
@@ -22,22 +21,21 @@
     </table>
 
     <form th:action="@{/login}" method="post" th:object="${userLog}">
-        <label for="username">Username:
-            <input type="text" name="username" id="username" required th:value="*{username}">
-        </label><br>
-        <label for="password">Password:
-            <input type="password" name="password" id="password" required th:value="*{password}">
-        </label><br>
+        <label>Username: </label>
+        <input type="text" th:field="*{username}" th:value="*{username}">
+        <br/>
+
+        <label>Password: </label>
+        <input type="password" th:field="*{password}" th:value="*{password}">
+        <br/>
+
         <button type="submit">Login</button>
     </form>
-    <!--<th:if test="${er}">
-        <div style="color: red">
-            <c:forEach var="error" items="${requestScope.errors}">
-                <span>${error.message}</span>
-                <br>
-            </c:forEach>
-        </div>
-    </th:if>-->
+
+    <div style="color: red" th:if="${errors}">
+        <h4 th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</h4>
+    </div>
+
     <h2>
         <a th:href="@{/}">Trading floor</a>
     </h2>

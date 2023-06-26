@@ -2,7 +2,6 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.example.dto.categoryDto.CategoryDto;
 import org.example.exception.DaoException;
 import org.example.exception.ServiceException;
 import org.example.mapper.CategoryMapper;
@@ -17,8 +16,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-
-    public List<CategoryDto> getCategories() {
+    public List<String> getCategories() {
         try {
             return categoryRepository.findAll()
                     .stream()

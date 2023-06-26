@@ -12,32 +12,27 @@
                 <h2>Menu</h2>
             </td>
             <td>
-                <%@include file="../main/returnToMainHeader.html" %>
+                <a th:href="@{/}">Return</a>
             </td>
         </tr>
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}<%=UrlPath.ABOUT%>">About user</a>
+                <a th:href="@{/user_menu/about}">About user</a>
             </td>
         </tr>
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}<%=UrlPath.CHANGE_PASSWORD%>">Change password</a>
+                <a th:href="@{/user_menu/add_advertisement}">New advertisement</a>
             </td>
         </tr>
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}<%=UrlPath.NEW_AD%>">New advertisement</a>
+                <a th:href="@{/user_menu/advertisements}">My advertisements</a>
             </td>
         </tr>
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}<%=UrlPath.MY_AD%>">My advertisements</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="${pageContext.request.contextPath}<%=UrlPath.REPLENISH_BALANCE%>">Replenish balance</a>
+                <a th:href="@{/user_menu/replenish}">Replenish balance</a>
             </td>
         </tr>
     </table>

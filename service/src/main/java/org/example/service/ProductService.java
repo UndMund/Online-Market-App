@@ -1,7 +1,6 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.statusDto.StatusDto;
@@ -10,7 +9,10 @@ import org.example.exception.DaoException;
 import org.example.exception.ServiceException;
 import org.example.mapper.CategoryMapper;
 import org.example.mapper.ProductMapper;
+import org.example.mapper.StatusMapper;
+import org.example.repository.CategoryRepository;
 import org.example.repository.ProductRepository;
+import org.example.repository.UserRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -21,22 +23,26 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     private final ProductMapper productMapper;
     private final CategoryMapper categoryMapper;
+    private final StatusMapper statusMapper;
 
-    public Slice<ProductDtoRequest> getSliceByCategory(Pageable pageable, CategoryDto categoryDto) {
+    public Slice<ProductDtoRequest> getSliceByCategory(Pageable pageable, String category) {
         return productRepository.findAllByCategory(
-                        categoryMapper.toCategory(categoryDto),
+                        categoryMapper.toCategory(category),
                         pageable)
                 .map(productMapper::toProductDto);
     }
 
-    public List<ProductDtoRequest> getProductsByCategory(CategoryDto categoryDto) {
+    public List<ProductDtoRequest> getProductsByCategory(String category) {
         try {
             return productRepository.findAllByCategoryAndStatus(
-                            categoryMapper.toCategory(categoryDto),
+                            categoryMapper.toCategory(category),
                             Status.ON_SALE
                     )
                     .stream()
@@ -49,7 +55,23 @@ public class ProductService {
 
     public List<ProductDtoRequest> getProductsByStatus(StatusDto status) {
         try {
-            return productRepository.findAllByStatus(Status.ON_SALE)
+            return productRepository.findAllByStatus(
+                            statusMapper.toStatus(status)
+                    )
+                    .stream()
+                    .map(productMapper::toProductDto)
+                    .toList();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public List<ProductDtoRequest> getUserProductsOnSale(Long userId) {
+        try {
+            return productRepository.findAllByUserAndStatus(
+                            userRepository.findById(userId).orElseThrow(),
+                            Status.ON_SALE
+                    )
                     .stream()
                     .map(productMapper::toProductDto)
                     .toList();
@@ -65,11 +87,50 @@ public class ProductService {
                     .map(productMapper::toProduct)
                     .map(product -> {
                         product.setStatus(Status.REVIEW);
+                        product.setCategory(
+                                categoryRepository
+                                        .findByCategoryName(productDto.getCategory())
+                                        .orElseThrow()
+                        );
+                        product.setUser(
+                                userRepository.findById(productDto.getUserId())
+                                        .orElseThrow()
+                        );
                         return product;
                     })
                     .map(productRepository::save);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Transactional
+    public void verifyProduct(Long id) throws ServiceException {
+        try {
+            productRepository.findById(id)
+                    .map(product -> {
+                        product.setStatus(Status.ON_SALE);
+                        return product;
+                    });
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Transactional
+    public boolean delete(Long id) {
+        return productRepository.findById(id)
+                .map(entity -> {
+                    productRepository.delete(entity);
+                    productRepository.flush();
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public ProductDtoRequest findById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::toProductDto)
+                .orElseThrow();
     }
 }

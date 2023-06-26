@@ -1,12 +1,15 @@
 package org.example.mapper;
 
-import org.example.dto.categoryDto.CategoryDto;
 import org.example.entity.Category;
-import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 @Component
-@Mapper(componentModel = "spring")
-public interface CategoryMapper {
-    Category toCategory(CategoryDto categoryDto);
-    CategoryDto toCategoryDto(Category category);
+public class CategoryMapper {
+    public Category toCategory(String categoryDto) {
+        return Category.builder()
+                .categoryName(categoryDto)
+                .build();
+    }
+    public String toCategoryDto(Category category) {
+        return category.getCategoryName();
+    }
 }

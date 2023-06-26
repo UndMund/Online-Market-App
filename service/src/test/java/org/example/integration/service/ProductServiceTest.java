@@ -1,10 +1,9 @@
 package org.example.integration.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.integration.annotation.IntegrationTest;
-import org.example.dto.categoryDto.CategoryDto;
 import org.example.dto.productDto.ProductDtoRequest;
-import org.example.mapper.categoryMap.CategoryMapper;
+import org.example.integration.annotation.IntegrationTest;
+import org.example.mapper.CategoryMapper;
 import org.example.repository.CategoryRepository;
 import org.example.repository.ProductRepository;
 import org.example.service.ProductService;
@@ -27,11 +26,11 @@ public class ProductServiceTest {
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private CategoryDto categoryDto;
+    private String categoryDto;
 
     @BeforeEach
     void setUp() {
-         categoryDto = categoryMapper.mapFrom(categoryRepository.findById(1).get());
+         categoryDto = categoryMapper.toCategoryDto(categoryRepository.findById(1).get());
     }
 
     @Test

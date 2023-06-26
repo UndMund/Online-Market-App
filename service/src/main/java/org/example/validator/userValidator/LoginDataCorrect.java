@@ -1,6 +1,5 @@
 package org.example.validator.userValidator;
 
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -9,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy=UserNameCorrectValidator.class)
-public @interface UserNameCorrect {
-    String message() default "{name.notExists}";
+@Constraint(validatedBy = LoginDataCorrectValidator.class)
+public @interface LoginDataCorrect {
+    String message() default "{login.wrongData}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

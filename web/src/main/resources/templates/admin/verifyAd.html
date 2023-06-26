@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify</title>
+</head>
+<body>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <h2>Unverified products</h2>
+            </td>
+            <td>
+                <a th:href="@{/admin_menu}">Return</a>
+            </td>
+        </tr>
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Cost ($)</th>
+            <th>Description</th>
+            <th>Trader name</th>
+        </tr>
+        <div th:each="product : ${unverifiedProducts}">
+            <tr>
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.price}">Price</td>
+                <td th:text="${product.description}">Description</td>
+                <td th:text="${product.user.username}">Username</td>
+                <form th:action="@{/advertise/verify(id=${product.id})}" method="post">
+                    <td>
+                        <input type="submit" value="Verify">
+                    </td>
+                </form>
+                <form th:action="@{/advertise/remove(id=${product.id})}" method="post">
+                    <td>
+                        <input type="submit" value="Delete">
+                    </td>
+                </form>
+            </tr>
+        </div>
+    </table>
+</div>
+</body>
+</html>

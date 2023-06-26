@@ -1,14 +1,11 @@
 package org.example.dto.productDto;
 
-import lombok.Builder;
-import lombok.Value;
-import org.example.dto.categoryDto.CategoryDto;
-import org.example.dto.userDto.UserDtoCreateProductResponse;
-import org.example.validator.productValidator.ProductUnique;
-
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
+import lombok.Value;
+import org.example.validator.productValidator.ProductUnique;
 
 @Value
 @Builder
@@ -21,6 +18,6 @@ public class ProductDtoCreateResponse {
     String price;
     @Size(min = 20, max = 300, message = "Description must be 20-300 characters long")
     String description;
-    CategoryDto category;
-    UserDtoCreateProductResponse user;
+    String category;
+    Long userId;
 }

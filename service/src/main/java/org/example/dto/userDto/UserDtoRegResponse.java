@@ -1,14 +1,13 @@
 package org.example.dto.userDto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.example.validator.userValidator.UserEmailUnique;
 import org.example.validator.userValidator.UserNameUnique;
 import org.example.validator.userValidator.UserPhoneUnique;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 @Value
 @Builder

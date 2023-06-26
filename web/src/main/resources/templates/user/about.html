@@ -4,36 +4,40 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>aboutUser</title>
+    <title>About user</title>
 </head>
 <body>
 <div align="center">
-    <table>
+    <table th:object="${session.sessionUser}">
         <tr>
             <td>
-                <%@ include file="returnToUserMenuHeader.jsp"%>
+                <h1>Profile</h1>
             </td>
             <td>
-                <h1>Profile</h1>
+                <a th:href="@{/user_menu}">Return</a>
             </td>
         </tr>
         <tr>
             <td>Name</td>
-            <td>${sessionScope.user.username}</td>
+            <td th:text="*{username}"></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td>${sessionScope.user.email}</td>
+            <td th:text="*{email}"></td>
         </tr>
         <tr>
             <td>Phone</td>
-            <td>${sessionScope.user.phoneNumber}</td>
+            <td th:text="*{phoneNumber}"></td>
         </tr>
         <tr>
             <td>Money</td>
-            <td>${sessionScope.user.money}</td>
+            <td th:text="*{money}"></td>
         </tr>
-
+        <tr>
+            <td>
+                <a th:href="@{/user_menu/about/change_password}">Change Password</a>
+            </td>
+        </tr>
     </table>
     <p></p>
 </div>

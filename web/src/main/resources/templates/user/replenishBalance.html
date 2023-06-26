@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Replenish</title>
+</head>
+<body>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <a th:href="@{/user_menu}">Return</a>
+            </td>
+            <td>
+                <h2>Replenish balance</h2>
+            </td>
+        </tr>
+    </table>
+
+    <div th:if="${session.sessionUser ne null}">
+        <label th:text="${session.sessionUser.username}">Username</label>
+        <label th:text="|, ${session.sessionUser.money}$|">money</label>
+    </div>
+    <br/>
+
+    <form th:action="@{/user_menu/replenish}" method="post">
+        <select name="money" id="money" required>
+            <option th:text="10" th:value="10"></option>
+            <option th:text="100" th:value="100"></option>
+            <option th:text="1000" th:value="1000"></option>
+        </select>
+
+        <input type="submit" value="Replenish">
+    </form>
+
+</div>
+</body>
+</html>

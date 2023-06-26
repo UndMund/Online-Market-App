@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My products</title>
+</head>
+<body>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <h2>Products</h2>
+            </td>
+            <td>
+                <a th:href="@{/user_menu}">Return</a>
+            </td>
+        </tr>
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Cost ($)</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+        <div th:each="product : ${userProducts}">
+            <tr>
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.price}">Price</td>
+                <td th:text="${product.description}">Description</td>
+                <form th:action="@{/advertise/delete(id=${product.id})}" method="post">
+                    <td>
+                        <input type="submit" value="Delete">
+                    </td>
+                </form>
+            </tr>
+        </div>
+    </table>
+</div>

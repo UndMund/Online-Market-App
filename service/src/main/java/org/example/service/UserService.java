@@ -1,6 +1,5 @@
 package org.example.service;
 
-import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoLogResponse;
 import org.example.dto.userDto.UserDtoRegResponse;
@@ -12,15 +11,15 @@ import org.example.mapper.UserMapper;
 import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final Validator validator;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
 
     public UserDtoRequest login(UserDtoLogResponse userDto) throws ServiceException {
         try {
@@ -48,10 +47,30 @@ public class UserService {
 
     public void updatePassword(UserDtoUpdatePasswordResponse userDto) throws ServiceException {
         try {
+            userRepository.findById(userDto.getId())
+                    .map(user -> {
+                        user.setPassword(userDto.getNewPassword());
+                        userRepository.flush();
+                        return user;
+                    });
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 
-            var user = userRepository.findById(userDto.getId()).get();
-            user.setPassword(userDto.getPassword());
-
+    public UserDtoRequest updateBalance(Integer money, Long userId, BinaryOperator<BigDecimal> binaryOperator) {
+        try {
+            return userRepository.findById(userId)
+                    .map(user -> {
+                        user.setMoney(
+                                binaryOperator.apply(
+                                        user.getMoney(),
+                                        new BigDecimal(money))
+                        );
+                        userRepository.flush();
+                        return user;
+                    }).map(userMapper::toUserDto)
+                    .get();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
