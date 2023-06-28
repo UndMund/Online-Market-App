@@ -36,10 +36,15 @@
         <input type="password" th:field="*{password}" required th:value="*{password}">
         <br/>
 
-        <div th:each="position : ${positions}">
-            <input th:id="${position}" type="radio" name="position" required th:value="${position}" th:checked="${position.position eq userReg.position}">
-            <label th:for="${position}" th:text="${position.position}">Role name</label>
-        </div>
+        <label>Position: </label>
+        <select th:field="*{position}" name="position" id="position" required>
+            <option th:each="position : ${positions}"
+                    th:text="${position.position}"
+                    th:value="${position.position}"
+                    th:selected="${userReg.position eq position}">Category
+            </option>
+        </select><br/>
+
         <input type="submit" value="Register">
     </form>
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.statusDto.StatusDto;
+import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.Status;
 import org.example.exception.DaoException;
 import org.example.exception.ServiceException;
@@ -18,13 +19,17 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductService {
+    private final UserService userService;
+    private final ImageService imageService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
@@ -84,7 +89,10 @@ public class ProductService {
     public void createProduct(ProductDtoCreateResponse productDto) {
         try {
             Optional.of(productDto)
-                    .map(productMapper::toProduct)
+                    .map(productDtoCreate -> {
+                        imageService.uploadImage(productDtoCreate.getImage());
+                        return productMapper.toProduct(productDtoCreate);
+                    })
                     .map(product -> {
                         product.setStatus(Status.REVIEW);
                         product.setCategory(
@@ -102,6 +110,19 @@ public class ProductService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Transactional
+    public void buyProduct(ProductDtoRequest productDto, UserDtoRequest userDto) {
+        productRepository.findById(productDto.getId())
+                .map(product -> {
+                    product.setStatus(Status.SALES);
+                    productRepository.flush();
+                    return product;
+                });
+
+        BinaryOperator<BigDecimal> minus = BigDecimal::subtract;
+        userService.updateBalance(productDto.getPrice(), userDto.getId(), minus);
     }
 
     @Transactional

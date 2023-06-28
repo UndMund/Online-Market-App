@@ -99,7 +99,7 @@ public class UserController {
     }
 
     @PostMapping(REPLENISH_BALANCE)
-    public String replenishBalance(@ModelAttribute("money") Integer money,
+    public String replenishBalance(@ModelAttribute("money") BigDecimal money,
                                    @SessionAttribute("sessionUser") UserDtoRequest sessionUser,
                                    Model model) {
         BinaryOperator<BigDecimal> sumOperator = BigDecimal::add;
@@ -108,7 +108,6 @@ public class UserController {
                         sessionUser.getId(),
                         sumOperator)
         );
-
         return "redirect:" + USER_PROFILE + REPLENISH_BALANCE;
     }
 }

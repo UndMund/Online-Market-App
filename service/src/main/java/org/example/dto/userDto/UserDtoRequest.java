@@ -2,6 +2,7 @@ package org.example.dto.userDto;
 
 import lombok.Builder;
 import lombok.Value;
+import org.example.dto.positionDto.PositionDto;
 
 import java.math.BigDecimal;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 public class UserDtoRequest {
     Long id;
     String username;
-    String position;
+    PositionDto position;
     String email;
     String phoneNumber;
     BigDecimal money;

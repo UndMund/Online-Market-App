@@ -5,6 +5,7 @@
     <title>New advertisement</title>
 </head>
 <body>
+<div th:replace="~{headers/userInfoHeader}">header</div>
 <div align="center">
     <table>
         <tr>
@@ -16,7 +17,7 @@
             </td>
         </tr>
     </table>
-    <form th:action="@{/user_menu/add_advertisement}" method="post" th:object="${newProduct}">
+    <form th:action="@{/user_menu/add_advertisement}" enctype="multipart/form-data" method="post" th:object="${newProduct}">
         <label for="name">Name: </label>
         <input type="text" name="name" id="name" required th:value="*{name}">
         </br>
@@ -36,6 +37,10 @@
                     th:selected="${newProduct.category eq category}">Category
             </option>
         </select><br/>
+
+        <label for="image">Image: </label>
+        <input id="image" type="file" name="image" required>
+        <br>
 
         <input type="hidden" id="userId" name="userId" th:value="${session.sessionUser.id}">
 

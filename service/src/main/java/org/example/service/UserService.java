@@ -37,7 +37,10 @@ public class UserService {
         try {
             return Optional.of(userDto)
                     .map(userMapper::toUser)
-                    .map(userRepository::save)
+                    .map(user -> {
+                        user.setMoney(BigDecimal.ZERO);
+                        return userRepository.save(user);
+                    })
                     .map(userMapper::toUserDto)
                     .get();
         } catch (DaoException e) {
@@ -58,15 +61,15 @@ public class UserService {
         }
     }
 
-    public UserDtoRequest updateBalance(Integer money, Long userId, BinaryOperator<BigDecimal> binaryOperator) {
+    public UserDtoRequest updateBalance(BigDecimal money, Long userId, BinaryOperator<BigDecimal> binaryOperator) {
         try {
             return userRepository.findById(userId)
                     .map(user -> {
                         user.setMoney(
                                 binaryOperator.apply(
                                         user.getMoney(),
-                                        new BigDecimal(money))
-                        );
+                                        money
+                                ));
                         userRepository.flush();
                         return user;
                     }).map(userMapper::toUserDto)
@@ -74,5 +77,11 @@ public class UserService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    public UserDtoRequest findById(Long id) {
+        return userRepository.findById(id)
+                .map(userMapper::toUserDto)
+                .orElseThrow();
     }
 }

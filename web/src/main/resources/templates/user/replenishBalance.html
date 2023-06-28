@@ -6,6 +6,7 @@
     <title>Replenish</title>
 </head>
 <body>
+<div th:replace="~{headers/userInfoHeader}">header</div>
 <div align="center">
     <table>
         <tr>
@@ -13,16 +14,10 @@
                 <a th:href="@{/user_menu}">Return</a>
             </td>
             <td>
-                <h2>Replenish balance</h2>
+                <h1>Replenish balance</h1>
             </td>
         </tr>
     </table>
-
-    <div th:if="${session.sessionUser ne null}">
-        <label th:text="${session.sessionUser.username}">Username</label>
-        <label th:text="|, ${session.sessionUser.money}$|">money</label>
-    </div>
-    <br/>
 
     <form th:action="@{/user_menu/replenish}" method="post">
         <select name="money" id="money" required>

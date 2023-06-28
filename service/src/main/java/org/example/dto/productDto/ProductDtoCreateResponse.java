@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.example.validator.productValidator.ProductUnique;
+import org.springframework.web.multipart.MultipartFile;
 
 @Value
 @Builder
@@ -19,5 +20,6 @@ public class ProductDtoCreateResponse {
     @Size(min = 20, max = 300, message = "Description must be 20-300 characters long")
     String description;
     String category;
+    MultipartFile image;
     Long userId;
 }

@@ -1,68 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<html>
 <head>
     <title>Main</title>
 </head>
+
 <body>
-<h2>
-    <table>
-        <tr>
-            <div th:if="${session.sessionUser eq null}">
-                <a th:href="@{/login}">Login</a>
-            </div>
-            <div th:if="${session.sessionUser ne null}">
-                <a th:href="@{/user_menu}" th:text="${session.sessionUser.username}">Username</a>
-                <label th:text="|, ${session.sessionUser.money}$|"></label>
-                <div th:if="${session.sessionUser.position eq 'Admin'}">
-                    <a th:href="@{/admin_menu}">Admin menu</a>
-                </div>
-                <form th:action="@{/logout}" method="post">
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        </tr>
-        <tr>
-            <form th:action="@{/}" method="post">
-                <td>
-                    <select name="currentCategory" id="currentCategory" required>
-                        <div th:each="category : ${session.categories}">
-                            <option th:selected="${currentCategory}" th:text="*{categoryName}">Category name</option>
-                        </div>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit">Use filter</button>
-                </td>
-            </form>
-        </tr>
-    </table>
-</h2>
+<div th:replace="~{headers/userInfoHeader}">header</div>
+<form th:action="@{/}" method="post">
+
+    <select name="currentCategory" id="currentCategory" required>
+        <div th:each="category : ${session.categories}">
+            <option th:selected="${currentCategory}" th:text="*{categoryName}">Category name</option>
+        </div>
+    </select>
+    <button type="submit">Use filter</button>
+</form>
 <div align="center">
     <h2 th:if="${currentCategory}">Category</h2>
     <table border="1">
         <tr>
+            <th>Photo</th>
             <th>Name</th>
             <th>Cost ($)</th>
-            <th>Description</th>
-            <th>Trader name</th>
-            <th>Trader phone number</th>
         </tr>
         <div th:each="product : ${products}">
             <tr>
-                <td th:text="${product.name}">Name</td>
-                <td th:text="${product.price}">Price</td>
-                <td th:text="${product.description}">Description</td>
-                <td th:text="${product.user.username}">User username</td>
-                <td th:text="${product.user.phoneNumber}">User phoneNumber</td>
-                <div th:if="${(session.sessionUser ne null) and (product.user ne session.sessionUser)}">
-                    <form th:action="@{'/advertise/buy' + ${product.id}}" method="get">
-                        <td>
-                            <input type="submit" value="Buy">
-                        </td>
-                    </form>
-                </div>
+                <td>
+                    <img th:src="@{'data:image/jpeg;base64,'+${product.generateBase64String()}}" alt="" width="150"/>
+                </td>
+                    <td th:text="${product.name}">Name</td>
+                    <td th:text="${product.price}">Price</td>
+                    <div th:if="${(session.sessionUser ne null) and (product.user ne session.sessionUser)}">
+                        <form th:action="@{/advertise/{id}(id=${product.id})}" method="get">
+                            <td>
+                                <input type="submit" value="More information">
+                            </td>
+                        </form>
+                    </div>
             </tr>
         </div>
     </table>

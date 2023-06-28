@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Buy</title>
+</head>
+<body>
+<div th:replace="~{headers/userInfoHeader}">header</div>
+<div align="center" th:object="${currentProduct}">
+    <table>
+        <tr>
+            <td>
+                <h1 th:text="|Buy *{name}|"></h1>
+            </td>
+            <td>
+                <a th:href="@{/}">Return</a>
+            </td>
+        </tr>
+    </table>
+    <img th:src="@{'data:image/jpeg;base64,'+${currentProduct.generateBase64String()}}" alt="" width="300"/>
+    <h3>
+        <table border="1">
+            <tr>
+                <td>Product name</td>
+                <td th:text="*{name}"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td th:text="*{description}"></td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td th:text="*{category}"></td>
+            </tr>
+            <tr>
+                <td>Money</td>
+                <td th:text="*{price}"></td>
+            </tr>
+            <tr>
+                <td>Seller</td>
+                <td th:text="|${currentProduct.user.username} ${currentProduct.user.phoneNumber}|"></td>
+            </tr>
+        </table>
+    </h3>
+
+    <p></p>
+    <form th:action="@{/advertise/buy}" method="post">
+        <input type="submit" value="Buy">
+    </form>
+
+    <div style="color: red" th:if="${error}">
+        <h4 th:text="${error}">Error message</h4>
+    </div>
+
+    <div style="color: green" th:if="${message}">
+        <h4 th:text="${message}">Message</h4>
+    </div>
+</div>
+</body>
+</html>

@@ -5,11 +5,12 @@
     <title>Verify</title>
 </head>
 <body>
+<div th:replace="~{headers/userInfoHeader}">header</div>
 <div align="center">
     <table>
         <tr>
             <td>
-                <h2>Unverified products</h2>
+                <h1>Unverified products</h1>
             </td>
             <td>
                 <a th:href="@{/admin_menu}">Return</a>
@@ -19,6 +20,7 @@
 
     <table border="1">
         <tr>
+            <th>Photo</th>
             <th>Name</th>
             <th>Cost ($)</th>
             <th>Description</th>
@@ -26,6 +28,9 @@
         </tr>
         <div th:each="product : ${unverifiedProducts}">
             <tr>
+                <td>
+                    <img th:src="@{'data:image/jpeg;base64,'+${product.generateBase64String()}}" alt="" width="150"/>
+                </td>
                 <td th:text="${product.name}">Name</td>
                 <td th:text="${product.price}">Price</td>
                 <td th:text="${product.description}">Description</td>

@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper(componentModel = "spring", uses = {CategoryMapper.class, UserMapper.class, StatusMapper.class})
+@Mapper(componentModel = "spring",
+        uses = {CategoryMapper.class, UserMapper.class, StatusMapper.class, ImageMapper.class})
 public interface ProductMapper {
     @Mapping(target = "productName", source = "name")
     Product toProduct(ProductDtoCreateResponse productDto);

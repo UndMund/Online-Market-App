@@ -20,5 +20,6 @@ public class UrlPath {
     public static final String ALL_ORDERS = "/orders";
     public static final String DELETE = "/delete";
     public static final String REMOVE = "/remove";
+    public static final String BUY = "/buy";
     public static final String ADVERTISE = "/advertise";
 }

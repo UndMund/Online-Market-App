@@ -28,6 +28,8 @@ public class Product {
     private BigDecimal price;
     @Column(nullable = false, length = 800)
     private String description;
+    @Column
+    private String image;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
