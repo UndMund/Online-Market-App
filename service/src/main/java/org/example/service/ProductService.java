@@ -1,19 +1,21 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.dto.filter.FilterResolver;
+import org.example.dto.filter.ProductFilter;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.statusDto.StatusDto;
 import org.example.dto.userDto.UserDtoRequest;
+import org.example.entity.QProduct;
 import org.example.entity.Status;
-import org.example.exception.DaoException;
 import org.example.exception.ServiceException;
-import org.example.mapper.CategoryMapper;
 import org.example.mapper.ProductMapper;
 import org.example.mapper.StatusMapper;
 import org.example.repository.CategoryRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.UserRepository;
+import org.example.repository.predicates.QPredicates;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -34,26 +36,30 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ProductMapper productMapper;
-    private final CategoryMapper categoryMapper;
     private final StatusMapper statusMapper;
 
-    public Slice<ProductDtoRequest> getSliceByCategory(Pageable pageable, String category) {
-        return productRepository.findAllByCategory(
-                        categoryMapper.toCategory(category),
-                        pageable)
-                .map(productMapper::toProductDto);
+    public Slice<ProductDtoRequest> getProductSliceByFilter(int page, int size, ProductFilter productFilter) {
+        try {
+            var predicate = QPredicates.builder()
+                    .add(Status.ON_SALE, QProduct.product.status::eq)
+                    .add(productFilter.categoryFilter(), QProduct.product.category.categoryName::eq)
+                    .build();
+
+            return productRepository.findAll(predicate, FilterResolver.priceFilterHandler(page, size, productFilter))
+                    .map(productMapper::toProductDto);
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
-    public List<ProductDtoRequest> getProductsByCategory(String category) {
+    public Slice<ProductDtoRequest> getProductSlice(Pageable pageable) {
         try {
-            return productRepository.findAllByCategoryAndStatus(
-                            categoryMapper.toCategory(category),
-                            Status.ON_SALE
+            return productRepository.findAllByStatus(
+                            Status.ON_SALE,
+                            pageable
                     )
-                    .stream()
-                    .map(productMapper::toProductDto)
-                    .toList();
-        } catch (DaoException e) {
+                    .map(productMapper::toProductDto);
+        } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
@@ -66,7 +72,7 @@ public class ProductService {
                     .stream()
                     .map(productMapper::toProductDto)
                     .toList();
-        } catch (DaoException e) {
+        } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
@@ -80,7 +86,7 @@ public class ProductService {
                     .stream()
                     .map(productMapper::toProductDto)
                     .toList();
-        } catch (DaoException e) {
+        } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
@@ -107,22 +113,36 @@ public class ProductService {
                         return product;
                     })
                     .map(productRepository::save);
-        } catch (DaoException e) {
+        } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
 
     @Transactional
     public void buyProduct(ProductDtoRequest productDto, UserDtoRequest userDto) {
-        productRepository.findById(productDto.getId())
-                .map(product -> {
-                    product.setStatus(Status.SALES);
-                    productRepository.flush();
-                    return product;
-                });
+        try {
+            productRepository.findById(productDto.getId())
+                    .map(product -> {
+                        product.setStatus(Status.SALES);
+                        productRepository.flush();
+                        return product;
+                    });
 
-        BinaryOperator<BigDecimal> minus = BigDecimal::subtract;
-        userService.updateBalance(productDto.getPrice(), userDto.getId(), minus);
+            BinaryOperator<BigDecimal> minus = BigDecimal::subtract;
+            userService.updateBalance(
+                    productDto.getPrice(),
+                    userDto.getId(),
+                    minus
+            );
+            BinaryOperator<BigDecimal> plus = BigDecimal::add;
+            userService.updateBalance(
+                    productDto.getPrice(),
+                    productDto.getUser().getId(),
+                    plus
+            );
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Transactional
@@ -133,25 +153,33 @@ public class ProductService {
                         product.setStatus(Status.ON_SALE);
                         return product;
                     });
-        } catch (DaoException e) {
+        } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
 
     @Transactional
-    public boolean delete(Long id) {
-        return productRepository.findById(id)
-                .map(entity -> {
-                    productRepository.delete(entity);
-                    productRepository.flush();
-                    return true;
-                })
-                .orElse(false);
+    public void delete(Long id) {
+        try {
+            productRepository.findById(id)
+                    .map(entity -> {
+                        imageService.deleteImage(entity.getImage());
+                        productRepository.delete(entity);
+                        productRepository.flush();
+                        return entity;
+                    });
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     public ProductDtoRequest findById(Long id) {
-        return productRepository.findById(id)
-                .map(productMapper::toProductDto)
-                .orElseThrow();
+        try {
+            return productRepository.findById(id)
+                    .map(productMapper::toProductDto)
+                    .orElseThrow();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 }

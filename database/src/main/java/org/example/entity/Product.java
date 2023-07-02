@@ -2,6 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @ToString(exclude = {"orders"})
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldNameConstants
 @Builder
 @Entity
 @Table(name = "product",

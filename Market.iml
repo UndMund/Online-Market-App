@@ -119,5 +119,16 @@
     <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: org.mapstruct:mapstruct-processor:1.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok-mapstruct-binding:0.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-core:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.mysema.commons:mysema-commons-lang:0.2.4" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-jpa:jakarta:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-sql:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-sql-spring:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-apt:jakarta:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:querydsl-codegen:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.querydsl:codegen-utils:5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jdt:ecj:3.26.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" name="Maven: io.github.classgraph:classgraph:4.8.108" level="project" />
   </component>
 </module>

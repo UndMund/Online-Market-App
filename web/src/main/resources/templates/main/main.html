@@ -6,38 +6,76 @@
 </head>
 
 <body>
-<div th:replace="~{headers/userInfoHeader}">header</div>
-<form th:action="@{/}" method="post">
+<div th:insert="~{fragments::userHeader}">header</div>
 
-    <select name="currentCategory" id="currentCategory" required>
-        <div th:each="category : ${session.categories}">
-            <option th:selected="${currentCategory}" th:text="*{categoryName}">Category name</option>
-        </div>
-    </select>
-    <button type="submit">Use filter</button>
+<form th:action="@{/{page}(page = 0)}" th:object="${productFilter}" method="post">
+    <label for="categoryFilter">Category filter: </label>
+    <select name="categoryFilter" id="categoryFilter">
+        <option value=""
+                th:selected="${productFilter.categoryFilter() eq null}">No filter
+        </option>
+        <option th:each="category : ${session.categories}"
+                th:text="${category}"
+                th:value="${category}"
+                th:selected="${productFilter.categoryFilter() eq category}">Category
+        </option>
+    </select></br>
+
+    <label for="priceFilter">Price filter: </label>
+    <select name="priceFilter" id="priceFilter">
+        <option value=""
+                th:selected="${productFilter.priceFilter() eq null}">No filter
+        </option>
+        <option th:each="priceFilter : ${priceFilterValues}"
+                th:text="${priceFilter.name()}"
+                th:value="${priceFilter.name()}"
+                th:selected="${productFilter.priceFilter() eq priceFilter.name()}">Category
+        </option>
+    </select><br/>
+
+    <input type="submit" value="Use filter"/>
 </form>
-<div align="center">
-    <h2 th:if="${currentCategory}">Category</h2>
+
+<div align="center" th:object="${products}">
+    <table>
+        <tr>
+            <th>
+                <form th:action="@{/{page}(page = ${products.metadata.getPage() - 1})}"
+                      th:if="${products.metadata.page > 0}" method="get">
+                    <input type="submit" value="<--">
+                </form>
+            </th>
+            <th>
+                <label th:text="|Page №${products.metadata.getPage() + 1}|"></label>
+            </th>
+            <th>
+                <form th:action="@{/{page}(page = ${products.metadata.getPage() + 1})}"
+                      th:if="${products.metadata.isNextPagePresent()}" method="get">
+                    <input type="submit" value="-->">
+                </form>
+            </th>
+        </tr>
+    </table>
     <table border="1">
         <tr>
             <th>Photo</th>
             <th>Name</th>
             <th>Cost ($)</th>
         </tr>
-        <div th:each="product : ${products}">
+        <div th:each="product : ${products.content}">
             <tr>
                 <td>
                     <img th:src="@{'data:image/jpeg;base64,'+${product.generateBase64String()}}" alt="" width="150"/>
                 </td>
-                    <td th:text="${product.name}">Name</td>
-                    <td th:text="${product.price}">Price</td>
-                    <div th:if="${(session.sessionUser ne null) and (product.user ne session.sessionUser)}">
-                        <form th:action="@{/advertise/{id}(id=${product.id})}" method="get">
-                            <td>
-                                <input type="submit" value="More information">
-                            </td>
-                        </form>
-                    </div>
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.price}">Price</td>
+                <div>
+                    <form th:action="@{/advertise/{id}(id=${product.id})}" method="get">
+                        <td>
+                            <input type="submit" value="More information">
+                        </td>
+                    </form>
+                </div>
             </tr>
         </div>
     </table>

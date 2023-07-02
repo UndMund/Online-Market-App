@@ -21,7 +21,7 @@ public class ImageService {
     public void upload(String imagePath, InputStream content) {
         Path fullImagePath = Path.of(bucket, imagePath);
 
-        try(content) {
+        try (content) {
             Files.createDirectories(fullImagePath.getParent());
             Files.write(fullImagePath, content.readAllBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         }
@@ -48,5 +48,11 @@ public class ImageService {
                 .filter(StringUtils::hasText)
                 .flatMap(this::get)
                 .orElseThrow();
+    }
+
+    @SneakyThrows
+    public void deleteImage(String fileName) {
+        Path fullImagePath = Path.of(bucket, fileName);
+        Files.deleteIfExists(fullImagePath);
     }
 }

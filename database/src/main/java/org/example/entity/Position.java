@@ -23,8 +23,6 @@ public class Position {
     @Builder.Default
     @OneToMany(mappedBy = "position", fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();
-    @Transient
-    private static List<Position> positions = new ArrayList<>();
 
     public void addUser(User user) {
         this.users.add(user);

@@ -6,7 +6,7 @@
     <title>Buy</title>
 </head>
 <body>
-<div th:replace="~{headers/userInfoHeader}">header</div>
+<div th:insert="~{fragments::userHeader}">header</div>
 <div align="center" th:object="${currentProduct}">
     <table>
         <tr>
@@ -45,7 +45,9 @@
     </h3>
 
     <p></p>
-    <form th:action="@{/advertise/buy}" method="post">
+    <form th:if="${(session.sessionUser ne null) and (currentProduct.user ne session.sessionUser)}"
+          th:action="@{/advertise/buy}"
+          method="post">
         <input type="submit" value="Buy">
     </form>
 

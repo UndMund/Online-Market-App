@@ -10,6 +10,7 @@ import org.example.exception.ServiceException;
 import org.example.mapper.UserMapper;
 import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.function.BinaryOperator;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -33,6 +35,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public UserDtoRequest create(UserDtoRegResponse userDto) throws ServiceException {
         try {
             return Optional.of(userDto)
@@ -48,6 +51,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void updatePassword(UserDtoUpdatePasswordResponse userDto) throws ServiceException {
         try {
             userRepository.findById(userDto.getId())
@@ -61,6 +65,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public UserDtoRequest updateBalance(BigDecimal money, Long userId, BinaryOperator<BigDecimal> binaryOperator) {
         try {
             return userRepository.findById(userId)

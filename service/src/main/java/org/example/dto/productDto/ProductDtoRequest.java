@@ -19,7 +19,6 @@ public class ProductDtoRequest {
     String category;
     byte[] image;
     UserDtoRequest user;
-
     public String generateBase64String() {
         return Base64.encodeBase64String(this.image);
     }

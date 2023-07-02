@@ -11,6 +11,17 @@
     <name>web Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <finalName>market</finalName>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
@@ -19,7 +30,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>market</finalName>
-    </build>
 </project>
