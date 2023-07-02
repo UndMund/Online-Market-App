@@ -18,7 +18,7 @@
             </td>
         </tr>
     </table>
-    <img th:src="@{'data:image/jpeg;base64,'+${currentProduct.generateBase64String()}}" alt="" width="300"/>
+    <img th:src="@{/market/api/v1/image/{id}(id = ${currentProduct.id})}" alt="" width="300"/>
     <h3>
         <table border="1">
             <tr>

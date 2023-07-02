@@ -14,8 +14,4 @@ public class ImageMapper {
         }
         return multipartFile.getOriginalFilename();
     }
-
-    public byte[] toMultipartFile(String fileName) {
-        return imageService.findAvatar(fileName);
-    }
 }

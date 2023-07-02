@@ -3,7 +3,6 @@ package org.example.service;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -41,13 +40,6 @@ public class ImageService {
         if (!image.isEmpty()) {
             upload(image.getOriginalFilename(), image.getInputStream());
         }
-    }
-
-    public byte[] findAvatar(String fileName) {
-        return Optional.ofNullable(fileName)
-                .filter(StringUtils::hasText)
-                .flatMap(this::get)
-                .orElseThrow();
     }
 
     @SneakyThrows

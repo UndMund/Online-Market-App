@@ -65,7 +65,7 @@
         <div th:each="product : ${products.content}">
             <tr>
                 <td>
-                    <img th:src="@{'data:image/jpeg;base64,'+${product.generateBase64String()}}" alt="" width="150"/>
+                    <img th:src="@{/market/api/v1/image/{id}(id = ${product.id})}" alt="" width="150"/>
                 </td>
                 <td th:text="${product.name}">Name</td>
                 <td th:text="${product.price}">Price</td>

@@ -7,6 +7,7 @@ import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.statusDto.StatusDto;
 import org.example.dto.userDto.UserDtoRequest;
+import org.example.entity.Product;
 import org.example.entity.QProduct;
 import org.example.entity.Status;
 import org.example.exception.ServiceException;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -171,6 +173,13 @@ public class ProductService {
         } catch (Exception e) {
             throw new ServiceException(e);
         }
+    }
+
+    public Optional<byte[]> findImageByProductId(Long id) {
+        return productRepository.findById(id)
+                .map(Product::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get);
     }
 
     public ProductDtoRequest findById(Long id) {
