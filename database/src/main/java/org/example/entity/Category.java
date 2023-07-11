@@ -1,10 +1,8 @@
 package org.example.entity;
 
-import lombok.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "category")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,10 +31,10 @@
                 <td>
                     <img th:src="@{/market/api/v1/image/{id}(id = ${product.id})}" alt="" width="150"/>
                 </td>
-                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.productName}">Name</td>
                 <td th:text="${product.price}">Price</td>
                 <td th:text="${product.description}">Description</td>
-                <form th:action="@{/advertise/delete(id=${product.id})}" method="post">
+                <form th:action="@{/advertise/delete/{id}(id=${product.id})}" method="post">
                     <td>
                         <input type="submit" value="Delete">
                     </td>

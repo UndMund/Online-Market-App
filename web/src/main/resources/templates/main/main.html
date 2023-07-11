@@ -67,7 +67,7 @@
                 <td>
                     <img th:src="@{/market/api/v1/image/{id}(id = ${product.id})}" alt="" width="150"/>
                 </td>
-                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.productName}">Name</td>
                 <td th:text="${product.price}">Price</td>
                 <div>
                     <form th:action="@{/advertise/{id}(id=${product.id})}" method="get">

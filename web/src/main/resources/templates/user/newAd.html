@@ -18,8 +18,8 @@
         </tr>
     </table>
     <form th:action="@{/user_menu/add_advertisement}" enctype="multipart/form-data" method="post" th:object="${newProduct}">
-        <label for="name">Name: </label>
-        <input type="text" name="name" id="name" required th:value="*{name}">
+        <label for="productName">Name: </label>
+        <input type="text" name="productName" id="productName" required th:value="*{productName}">
         </br>
 
         <label for="price">Cost: </label>

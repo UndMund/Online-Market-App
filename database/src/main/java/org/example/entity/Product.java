@@ -3,8 +3,6 @@ package org.example.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "product",
         uniqueConstraints = @UniqueConstraint(columnNames = {"productName", "user_id"}))
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +32,13 @@ public class Product {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
     @Builder.Default
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 }

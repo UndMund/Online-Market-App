@@ -14,7 +14,7 @@ public class ProductUniqueValidator implements ConstraintValidator<ProductUnique
     @Override
     public boolean isValid(ProductDtoCreateResponse productDtoCreateResponse, ConstraintValidatorContext constraintValidatorContext) {
         return productRepository.findByProductNameAndUserId(
-                productDtoCreateResponse.getName(),
+                productDtoCreateResponse.getProductName(),
                 productDtoCreateResponse.getUserId()
         ).isEmpty();
     }

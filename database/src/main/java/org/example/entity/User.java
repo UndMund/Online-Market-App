@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class User {
     private String phoneNumber;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, columnDefinition = "NUMERIC DEFAULT 0")
+    @Column(nullable = false)
     private BigDecimal money;
     @ManyToOne
     @JoinColumn(name = "position_id", referencedColumnName = "id", nullable = false)

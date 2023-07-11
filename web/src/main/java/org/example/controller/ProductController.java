@@ -5,6 +5,7 @@ import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.service.ProductService;
 import org.example.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class ProductController {
         return "advertise/advertise";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(BUY)
     public String buyProduct(@SessionAttribute("currentProduct") ProductDtoRequest currentProduct,
                              @SessionAttribute("sessionUser") UserDtoRequest sessionUser,
@@ -57,21 +59,21 @@ public class ProductController {
                 "Transaction has been approved!");
         return "redirect:" + ADVERTISE;
     }
-
-    @PostMapping(VERIFY_AD)
-    public String verifyAd(@RequestParam("id") Long id) {
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping(VERIFY_AD + "/{id}")
+    public String verifyAd(@PathVariable(value = "id") Long id) {
         productService.verifyProduct(id);
         return "redirect:" + ADMIN_PROFILE + VERIFY_AD;
     }
-
-    @PostMapping(REMOVE)
-    public String removeUnverifiedAd(@RequestParam("id") Long id) {
+    @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping(REMOVE + "/{id}")
+    public String removeUnverifiedAd(@PathVariable("id") Long id) {
         productService.delete(id);
         return "redirect:" + ADMIN_PROFILE + VERIFY_AD;
     }
-
-    @PostMapping(DELETE)
-    public String removeUserAd(@RequestParam("id") Long id) {
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(DELETE + "/{id}")
+    public String removeUserAd(@PathVariable("id") Long id) {
         productService.delete(id);
         return "redirect:" + USER_PROFILE + MY_AD;
     }

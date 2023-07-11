@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +13,7 @@
     <table>
         <tr>
             <td>
-                <h1 th:text="|Buy *{name}|"></h1>
+                <h1 th:text="|Buy *{productName}|"></h1>
             </td>
             <td>
                 <a th:href="@{/}">Return</a>
@@ -23,7 +25,7 @@
         <table border="1">
             <tr>
                 <td>Product name</td>
-                <td th:text="*{name}"></td>
+                <td th:text="*{productName}"></td>
             </tr>
             <tr>
                 <td>Description</td>
@@ -45,7 +47,8 @@
     </h3>
 
     <p></p>
-    <form th:if="${(session.sessionUser ne null) and (currentProduct.user ne session.sessionUser)}"
+    <form sec:authorize="isAuthenticated()"
+          th:if="${#authentication.getName() ne currentProduct.getUser().getUsername()}"
           th:action="@{/advertise/buy}"
           method="post">
         <input type="submit" value="Buy">

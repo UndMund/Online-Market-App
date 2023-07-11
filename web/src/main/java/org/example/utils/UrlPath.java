@@ -22,4 +22,5 @@ public class UrlPath {
     public static final String REMOVE = "/remove";
     public static final String BUY = "/buy";
     public static final String ADVERTISE = "/advertise";
+    public static final String LOAD_IMAGE = "/market/api/v1/image";
 }

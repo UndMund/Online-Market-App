@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.dto.userDto.UserDtoUpdatePasswordResponse;
+import org.example.service.OrderService;
 import org.example.service.ProductService;
 import org.example.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,9 +24,11 @@ import static org.example.utils.UrlPath.*;
 @RequestMapping(USER_PROFILE)
 @SessionAttributes("sessionUser")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class UserController {
     private final ProductService productService;
     private final UserService userService;
+    private final OrderService orderService;
 
     @GetMapping
     public String userMenuPage() {
@@ -91,6 +95,13 @@ public class UserController {
                 productService.getUserProductsOnSale(sessionUser.getId())
         );
         return "user/myAds";
+    }
+
+    @GetMapping(ALL_ORDERS)
+    public String allOrdersPage(Model model,
+                                @SessionAttribute("sessionUser") UserDtoRequest sessionUser) {
+        model.addAttribute("orders", orderService.getAllOrdersByUser(sessionUser));
+        return "user/myOrders";
     }
 
     @GetMapping(REPLENISH_BALANCE)

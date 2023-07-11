@@ -20,20 +20,20 @@
         </tr>
     </table>
 
-    <form th:action="@{/login}" method="post" th:object="${userLog}">
-        <label>Username: </label>
-        <input type="text" th:field="*{username}" th:value="*{username}">
+    <form th:action="@{/login}" method="post">
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" required>
         <br/>
 
-        <label>Password: </label>
-        <input type="password" th:field="*{password}" th:value="*{password}">
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" required>
         <br/>
 
         <button type="submit">Login</button>
     </form>
 
-    <div style="color: red" th:if="${errors}">
-        <h4 th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</h4>
+    <div style="color: red" th:if="${param.error}">
+        Invalid username or password
     </div>
 
     <h2>

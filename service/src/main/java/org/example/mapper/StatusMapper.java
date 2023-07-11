@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class StatusMapper {
     public Status toStatus(StatusDto object) {
-        return Status.find(object.name()).get();
+        return Status.find(object.name()).orElseThrow();
     }
 
     public StatusDto toStatusDto(Status object) {
-        return StatusDto.find(object.name()).get();
+        return StatusDto.find(object.name()).orElseThrow();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.rest.controller;
+package org.example.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.example.service.ProductService;

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>fragments</title>
@@ -7,13 +9,13 @@
 <body>
 <div th:fragment="userHeader">
     <h2>
-        <div th:if="${session.sessionUser eq null}">
+        <div sec:authorize="isAnonymous()">
             <a th:href="@{/login}">Login</a>
         </div>
-        <div th:if="${session.sessionUser ne null}">
+        <div sec:authorize="isAuthenticated()">
             <a th:href="@{/user_menu}" th:text="${session.sessionUser.username}">Username</a>
             <label th:text="|, ${session.sessionUser.money}$|"></label>
-            <div th:if="${session.sessionUser.position.position eq 'Admin'}">
+            <div sec:authorize="hasAuthority('Admin')">
                 <a th:href="@{/admin_menu}">Admin menu</a>
             </div>
             <form th:action="@{/logout}" method="post">

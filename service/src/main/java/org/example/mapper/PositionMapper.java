@@ -12,11 +12,7 @@ public class PositionMapper {
     private final PositionRepository positionRepository;
 
     public Position toPosition(String position) {
-        return positionRepository.findByPositionName(position).get();
-    };
-
-    public String toString(Position position) {
-        return position.getPositionName();
+        return positionRepository.findByPositionName(position).orElseThrow();
     }
 
     public PositionDto toPositionDto(Position position) {

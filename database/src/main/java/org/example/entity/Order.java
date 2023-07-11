@@ -4,6 +4,8 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Data
 @EqualsAndHashCode(of = {"product", "user"})
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private User user;
-
+    private LocalDate orderDate;
     public void setProduct(Product product) {
         this.product = product;
         product.getOrders().add(this);

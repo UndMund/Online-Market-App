@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @ProductUnique
 public class ProductDtoCreateResponse {
     @Size(min = 5, max = 30, message = "Name must be 5-30 characters long")
-    String name;
+    String productName;
     @Digits(integer = 5, fraction = 0, message = "Max price is 99999")
     @DecimalMin(value = "1", message = "Price must be more than 0")
     String price;

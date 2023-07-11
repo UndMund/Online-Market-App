@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="~{fragments::userHeader}">header</div>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <h1>Orders</h1>
+            </td>
+            <td>
+                <a th:href="@{/admin_menu}">Return</a>
+            </td>
+        </tr>
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Time</th>
+        </tr>
+        <div th:each="order : ${orders}">
+            <tr>
+                <td th:text="|[User] ${order.username} bought [Product] ${order.productName} from [User] ${order.sellerName}|">Description</td>
+                <td th:text="${order.price}">Price</td>
+                <td th:text="${order.orderDate}">Date</td>
+            </tr>
+        </div>
+    </table>
+</div>
+</body>
+</html>

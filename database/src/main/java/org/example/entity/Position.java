@@ -1,8 +1,9 @@
 package org.example.entity;
 
-import lombok.*;
-
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "position")
-public class Position {
+public class Position implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,5 +28,10 @@ public class Position {
     public void addUser(User user) {
         this.users.add(user);
         user.setPosition(this);
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.getPositionName();
     }
 }

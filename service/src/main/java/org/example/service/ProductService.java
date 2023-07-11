@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.filter.FilterResolver;
 import org.example.dto.filter.ProductFilter;
+import org.example.dto.orderDto.OrderDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoCreateResponse;
 import org.example.dto.productDto.ProductDtoRequest;
 import org.example.dto.statusDto.StatusDto;
@@ -39,6 +40,7 @@ public class ProductService {
     private final UserRepository userRepository;
     private final ProductMapper productMapper;
     private final StatusMapper statusMapper;
+    private final OrderService orderService;
 
     public Slice<ProductDtoRequest> getProductSliceByFilter(int page, int size, ProductFilter productFilter) {
         try {
@@ -93,6 +95,23 @@ public class ProductService {
         }
     }
 
+    public Optional<byte[]> findImageByProductId(Long id) {
+        return productRepository.findById(id)
+                .map(Product::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get);
+    }
+
+    public ProductDtoRequest findById(Long id) {
+        try {
+            return productRepository.findById(id)
+                    .map(productMapper::toProductDto)
+                    .orElseThrow();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
+
     @Transactional
     public void createProduct(ProductDtoCreateResponse productDto) {
         try {
@@ -129,6 +148,13 @@ public class ProductService {
                         productRepository.flush();
                         return product;
                     });
+
+            orderService.createOrder(
+                    OrderDtoCreateResponse.builder()
+                            .product(productDto)
+                            .user(userDto)
+                            .build()
+            );
 
             BinaryOperator<BigDecimal> minus = BigDecimal::subtract;
             userService.updateBalance(
@@ -170,23 +196,6 @@ public class ProductService {
                         productRepository.flush();
                         return entity;
                     });
-        } catch (Exception e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    public Optional<byte[]> findImageByProductId(Long id) {
-        return productRepository.findById(id)
-                .map(Product::getImage)
-                .filter(StringUtils::hasText)
-                .flatMap(imageService::get);
-    }
-
-    public ProductDtoRequest findById(Long id) {
-        try {
-            return productRepository.findById(id)
-                    .map(productMapper::toProductDto)
-                    .orElseThrow();
         } catch (Exception e) {
             throw new ServiceException(e);
         }

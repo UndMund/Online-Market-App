@@ -14,5 +14,5 @@ public class UserDtoUpdatePasswordResponse {
     String oldPassword;
     @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,40}",
             message = "Password must have one lowercase and one uppercase letter, one number and contain at least 6 characters")
-    String newPassword;
+    String rawPassword;
 }

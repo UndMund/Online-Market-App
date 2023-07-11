@@ -1,6 +1,7 @@
-package org.example.integration.annotation;
+package org.example.integration.anotation;
 
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.example.ApplicationRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.annotation.ElementType;
@@ -10,8 +11,7 @@ import java.lang.annotation.Target;
 
 @Target(value = ElementType.TYPE)
 @Retention(value = RetentionPolicy.RUNTIME)
-@AutoConfigureTestDatabase
-//@SpringBootTest(classes = {ApplicationRunner.class, TestConfiguration.class})
+@SpringBootTest(classes = ApplicationRunner.class)
 @Transactional
 public @interface IntegrationTest {
 }

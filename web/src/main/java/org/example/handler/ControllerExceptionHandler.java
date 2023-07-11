@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(ServiceException.class)
-    public String handleException(ServiceException exception, HttpServletRequest request) {
+    public String handleServiceException(ServiceException exception, HttpServletRequest request) {
         log.error("Service exception occured", exception);
         return "error/error";
     }

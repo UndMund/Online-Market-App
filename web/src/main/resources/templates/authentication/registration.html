@@ -33,17 +33,10 @@
         <br/>
 
         <label>Password: </label>
-        <input type="password" th:field="*{password}" required th:value="*{password}">
+        <input type="password" th:field="*{rawPassword}" required th:value="*{rawPassword}">
         <br/>
 
-        <label>Position: </label>
-        <select th:field="*{position}" name="position" id="position" required>
-            <option th:each="position : ${positions}"
-                    th:text="${position.position}"
-                    th:value="${position.position}"
-                    th:selected="${userReg.position eq position}">Category
-            </option>
-        </select><br/>
+        <input type="hidden" name="position" id="position" th:value="User">
 
         <input type="submit" value="Register">
     </form>

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 public class ProductDtoRequest {
     Long id;
-    String name;
+    String productName;
     BigDecimal price;
     String description;
     StatusDto status;

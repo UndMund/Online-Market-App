@@ -1,6 +1,5 @@
 package org.example.repository;
 
-import org.example.entity.Category;
 import org.example.entity.Product;
 import org.example.entity.Status;
 import org.example.entity.User;
@@ -15,7 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, QuerydslPredicateExecutor<Product> {
-    List<Product> findAllByCategoryAndStatus(Category category, Status status);
     List<Product> findAllByStatus(Status status);
     Slice<Product> findAllByStatus(Status status, Pageable pageable);
     Optional<Product> findByProductNameAndUserId(String productName, Long userId);

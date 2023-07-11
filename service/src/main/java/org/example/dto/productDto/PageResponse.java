@@ -1,11 +1,13 @@
 package org.example.dto.productDto;
 
 import lombok.Value;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
 @Value
+@FieldNameConstants
 public class PageResponse {
     List<ProductDtoRequest> content;
     Metadata metadata;
