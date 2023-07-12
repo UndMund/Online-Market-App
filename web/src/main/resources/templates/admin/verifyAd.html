@@ -35,7 +35,8 @@
                 <td th:text="${product.price}">Price</td>
                 <td th:text="${product.description}">Description</td>
                 <td th:text="${product.user.username}">Username</td>
-                <form th:action="@{/advertise/verify/{id}(id=${product.id})}" method="post">
+
+               <div th:if="${session.sessionUser.id ne product.user.id}"> <form th:action="@{/advertise/verify/{id}(id=${product.id})}" method="post">
                     <td>
                         <input type="submit" value="Verify">
                     </td>
@@ -45,6 +46,12 @@
                         <input type="submit" value="Delete">
                     </td>
                 </form>
+               </div>
+                <div th:if="${session.sessionUser.id eq product.user.id}">
+                    <td>
+                        <h3>You can`t verify your own advertise(</h3>
+                    </td>
+                </div>
             </tr>
         </div>
     </table>
