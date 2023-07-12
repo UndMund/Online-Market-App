@@ -29,8 +29,7 @@ public class MainPageController {
     private final ProductService productService;
 
     @GetMapping(MAIN)
-    public String defaultMainPage(Model model,
-                                  @SessionAttribute(name = "sessionPage", required = false) Integer page) {
+    public String defaultMainPage(@SessionAttribute(name = "sessionPage", required = false) Integer page) {
         return "redirect:" + MAIN + Objects.requireNonNullElse(page, DEFAULT_START_PAGE);
     }
 

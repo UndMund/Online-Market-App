@@ -3,9 +3,8 @@ package org.example.service;
 import org.example.entity.Category;
 import org.example.mapper.CategoryMapper;
 import org.example.repository.CategoryRepository;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,7 +20,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CategoryServiceTest {
     @InjectMocks
     private CategoryService categoryService;
@@ -33,7 +31,7 @@ class CategoryServiceTest {
     private Category category1;
     private Category category2;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         category1 = new Category();
 

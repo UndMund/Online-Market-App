@@ -15,7 +15,7 @@ import static org.springframework.http.ResponseEntity.notFound;
 @RestController
 @RequestMapping("/market/api/v1")
 @RequiredArgsConstructor
-public class ImageController {
+public class ImageRestController {
     private final ProductService productService;
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> getProductImage(@PathVariable Long id) {

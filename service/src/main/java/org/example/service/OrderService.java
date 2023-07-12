@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.orderDto.OrderDtoCreateResponse;
 import org.example.dto.orderDto.OrderDtoRequest;
 import org.example.dto.userDto.UserDtoRequest;
+import org.example.exception.ServiceException;
 import org.example.mapper.OrderMapper;
 import org.example.mapper.UserMapper;
 import org.example.repository.OrderRepository;
@@ -24,28 +25,40 @@ public class OrderService {
 
     @Transactional
     public void createOrder(OrderDtoCreateResponse orderDto) {
-        Optional.of(orderDto)
-                .map(orderMapper::toOrder)
-                .map(order -> {
-                    order.setOrderDate(LocalDate.now());
-                    return orderRepository.saveAndFlush(order);
-                });
+       try {
+           Optional.of(orderDto)
+                   .map(orderMapper::toOrder)
+                   .map(order -> {
+                       order.setOrderDate(LocalDate.now());
+                       return orderRepository.saveAndFlush(order);
+                   });
+       } catch (Exception e) {
+           throw new ServiceException(e);
+       }
     }
 
     public List<OrderDtoRequest> getAllOrders() {
-        return orderRepository.findAll()
-                .stream()
-                .map(orderMapper::toOrderDto)
-                .toList();
+        try {
+            return orderRepository.findAll()
+                    .stream()
+                    .map(orderMapper::toOrderDto)
+                    .toList();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     public List<OrderDtoRequest> getAllOrdersByUser(UserDtoRequest userDto) {
-        return orderRepository.findAllByUser(
-                userMapper.toUser(userDto)
-                )
-                .stream()
-                .map(orderMapper::toOrderDto)
-                .toList();
+        try {
+            return orderRepository.findAllByUser(
+                            userMapper.toUser(userDto)
+                    )
+                    .stream()
+                    .map(orderMapper::toOrderDto)
+                    .toList();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
 

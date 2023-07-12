@@ -32,16 +32,16 @@ public class UserService implements UserDetailsService {
     private final PositionMapper positionMapper;
 
     @Transactional
-    public UserDtoRequest create(UserDtoRegResponse userDto) throws ServiceException {
+    public void create(UserDtoRegResponse userDto) throws ServiceException {
         try {
-            return Optional.of(userDto)
+            Optional.of(userDto)
                     .map(userMapper::toUser)
                     .map(user -> {
                         user.setMoney(BigDecimal.ZERO);
                         return userRepository.save(user);
                     })
                     .map(userMapper::toUserDto)
-                    .get();
+                    .orElseThrow();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -97,33 +97,49 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDtoRequest findById(Long id) {
-        return userRepository.findById(id)
-                .map(userMapper::toUserDto)
-                .orElseThrow();
+       try {
+           return userRepository.findById(id)
+                   .map(userMapper::toUserDto)
+                   .orElseThrow();
+       } catch (Exception e) {
+           throw new ServiceException(e);
+       }
     }
 
     public UserDtoRequest findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(userMapper::toUserDto)
-                .orElseThrow();
+       try {
+           return userRepository.findByUsername(username)
+                   .map(userMapper::toUserDto)
+                   .orElseThrow();
+       } catch (Exception e) {
+           throw new ServiceException(e);
+       }
     }
 
     public List<UserDtoRequest> findAllUsers() {
-        return userRepository.findAllByPosition(
-                        positionMapper.toPosition("User")
-                ).stream()
-                .map(userMapper::toUserDto)
-                .toList();
+       try {
+           return userRepository.findAllByPosition(
+                           positionMapper.toPosition("User")
+                   ).stream()
+                   .map(userMapper::toUserDto)
+                   .toList();
+       } catch (Exception e) {
+           throw new ServiceException(e);
+       }
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        Collections.singleton(user.getPosition())
-                ))
-                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+       try {
+           return userRepository.findByUsername(username)
+                   .map(user -> new org.springframework.security.core.userdetails.User(
+                           user.getUsername(),
+                           user.getPassword(),
+                           Collections.singleton(user.getPosition())
+                   ))
+                   .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+       } catch (Exception e) {
+           throw new ServiceException(e);
+       }
     }
 }

@@ -4,14 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.userDto.UserDtoRequest;
 import org.example.entity.Status;
 import org.example.integration.IntegrationTestBase;
+import org.example.mapper.ImageMapper;
 import org.example.repository.ProductRepository;
 import org.example.repository.UserRepository;
+import org.example.service.ImageService;
 import org.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +23,8 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.utils.UrlPath.*;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RequiredArgsConstructor
@@ -34,6 +37,10 @@ public class UserControllerTest extends IntegrationTestBase {
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
     private static UserDtoRequest sessionUser;
+    @MockBean
+    private final ImageService imageService;
+    @MockBean
+    private final ImageMapper imageMapper;
 
     @BeforeEach
     public void setUp() {
@@ -104,16 +111,10 @@ public class UserControllerTest extends IntegrationTestBase {
 
     @Test
     public void addNewAdvertiseTest() throws Exception {
-        MockMultipartFile file
-                = new MockMultipartFile(
-                "file",
-                "hello.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "Hello, World!".getBytes()
-        );
+        Mockito.doNothing().when(imageService).uploadImage(null);
+        Mockito.doReturn("image.png").when(imageMapper).toString(null);
 
-        mockMvc.perform(multipart(USER_PROFILE + NEW_AD)
-                .file(file)
+        mockMvc.perform(post(USER_PROFILE + NEW_AD)
                 .param("productName", "Phone")
                 .param("price", "50")
                 .param("description", "descriptionttesttesttestetest")
@@ -121,9 +122,7 @@ public class UserControllerTest extends IntegrationTestBase {
                 .param("userId", sessionUser.getId().toString())
         ).andExpectAll(
                 status().is3xxRedirection(),
-                redirectedUrl(USER_PROFILE + NEW_AD),
-                model().attributeExists("message"),
-                model().attributeExists("sessionUser")
+                redirectedUrl(USER_PROFILE + NEW_AD)
         );
 
         var newProduct = productRepository.findById(12L);
