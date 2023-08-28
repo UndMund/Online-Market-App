@@ -47,6 +47,7 @@ A Online Market Project with authentication and authorization, made with Java, S
         * Spring Security
 * Additional tools:
     * EhCache [3.10.0]
+    * Snake Yaml [2.0]
     * Project Lombok [1.18.26]
     * Mapstruct [1.4.2.Final]
     * QueryDSL [5.0.0]
