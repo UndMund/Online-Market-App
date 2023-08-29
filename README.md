@@ -38,7 +38,7 @@ A Online Market Project with authentication and authorization, made with Java, S
     * Hibernate [6.2.2.Final]
     * Spring Framework:
         * Spring Boot [3.1.0]
-        * Spring Boot Test
+        * Spring Boot Test, also JUnit and Mockito
         * Spring Core
         * Spring Web
         * Spring Data JPA
